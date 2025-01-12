@@ -9,7 +9,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
-
     <div class="container mx-auto px-4 py-6">
         <h1 class="text-3xl font-bold text-center mb-8">Manage Categories</h1>
         <!-- Add Category Form -->

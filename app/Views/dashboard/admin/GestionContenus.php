@@ -9,12 +9,12 @@
 
 </head>
 <body class="bg-gray-50">
-  <?php include "../layout/header.php" ?>
+  <?php include "../../layout/header.php" ?>
 
    
     <div class="flex flex-col md:flex-row">
         <!-- nav -->
-         <?php include "../layout/nav.php" ?>
+         <?php include "../../layout/nav.php" ?>
         <section style="width:200rem;">
         <div class="container mx-auto px-4 py-12">
         <!-- Header Section -->

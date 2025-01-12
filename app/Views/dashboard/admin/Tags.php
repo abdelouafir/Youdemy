@@ -8,8 +8,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans text-gray-800">
+<?php include "../../layout/header.php" ?>
 
-  <div class="container mx-auto p-6">
+<div class="flex flex-col md:flex-row">
+<?php include "../../layout/nav.php" ?>
+<div class="container mx-auto p-6 py-14">
     <h1 class="text-3xl font-bold text-center mb-8">Gestion des Tags</h1>
 
     <!-- Tableau des Tags -->
@@ -57,6 +60,8 @@
       </form>
     </div>
   </div>
+</div>
+
 
 </body>
 </html>

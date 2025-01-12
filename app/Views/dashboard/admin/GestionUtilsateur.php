@@ -5,10 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Youdemy - Gestion des utilisateurs</title>
     <script src="https://cdn.tailwindcss.com"></script>
-            
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+
+
 </head>
 <body class="bg-gray-50">
-    <div class="container mx-auto px-4 py-8">
+<?php include "../../layout/header.php" ?>
+
+<div class="flex flex-col md:flex-row">
+<?php include "../../layout/nav.php" ?>
+    <div class="container mx-auto px-4 py-12">
         <!-- Header Section -->
         <div class="mb-8 flex justify-between items-center">
             <h1 class="text-2xl font-bold text-gray-900">Gestion des Utilisateurs</h1>
@@ -16,7 +22,6 @@
                 + Ajouter un utilisateur
             </button>
         </div>
-
         <!-- Filters and Search -->
         <div class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
             <div class="col-span-1">
@@ -224,5 +229,7 @@
             </div>
         </div>
     </div>
+</div>
+
 </body>
 </html>
