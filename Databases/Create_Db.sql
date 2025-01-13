@@ -1,6 +1,5 @@
 DROP DATABASE IF EXISTS Youdemy_db;
 CREATE DATABASE Youdemy_db;
-USE Youdemy_db;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
