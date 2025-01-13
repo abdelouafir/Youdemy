@@ -1,3 +1,16 @@
+<?php 
+require_once dirname(__FILE__, 5) . '/vendor/autoload.php';
+use app\Config\Database;
+use app\Models\admin;
+
+$conn = new Database();
+$conction = $conn->getConnection();
+
+$select = new admin();
+$users = $select->get_all_users($conction);
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -75,6 +88,7 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <!-- User Row 1 -->
+                        <?php foreach($users as $user){?>
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -82,14 +96,14 @@
                                         <img src="/api/placeholder/40/40" alt="" class="h-10 w-10 rounded-full">
                                     </div>
                                     <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">Thomas Martin</div>
-                                        <div class="text-sm text-gray-500">thomas.martin@example.com</div>
+                                        <div class="text-sm font-medium text-gray-900"><?= $user['username']?></div>
+                                        <div class="text-sm text-gray-500"><?= $user['email']?></div>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                    Étudiant
+                                    <?= $user['role']?>
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -105,85 +119,30 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <div class="flex justify-end space-x-2">
-                                    <button class="text-blue-600 hover:text-blue-900">Éditer</button>
-                                    <button class="text-red-600 hover:text-red-900">Supprimer</button>
-                                </div>
-                            </td>
-                        </tr>
+                               
+                                    <button class="text-red-600 hover:text-red-900">
+                                        <i class="fas fa-ban"></i> 
+                                        
+                                    </button>
+              
+                                    <button class="text-green-600 hover:text-green-900">
+                                        <i class="fas fa-check-circle"></i> 
+                                        
+                                    </button>
 
-                        <!-- User Row 2 -->
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 flex-shrink-0">
-                                        <img src="/api/placeholder/40/40" alt="" class="h-10 w-10 rounded-full">
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">Marie Dubois</div>
-                                        <div class="text-sm text-gray-500">marie.dubois@example.com</div>
-                                    </div>
+                                 
+                                    <button class="text-gray-600 hover:text-gray-900">
+                                        <i class="fas fa-trash-alt"></i> 
+                                        
+                                    </button>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
-                                    Instructeur
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                15/12/2024
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Actif
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                8 cours
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex justify-end space-x-2">
-                                    <button class="text-blue-600 hover:text-blue-900">Éditer</button>
-                                    <button class="text-red-600 hover:text-red-900">Supprimer</button>
-                                </div>
-                            </td>
-                        </tr>
 
-                        <!-- User Row 3 -->
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 flex-shrink-0">
-                                        <img src="/api/placeholder/40/40" alt="" class="h-10 w-10 rounded-full">
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">Pierre Durand</div>
-                                        <div class="text-sm text-gray-500">pierre.durand@example.com</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                    Admin
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                05/01/2025
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                    En attente
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                2 cours
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex justify-end space-x-2">
-                                    <button class="text-blue-600 hover:text-blue-900">Éditer</button>
-                                    <button class="text-red-600 hover:text-red-900">Supprimer</button>
-                                </div>
-                            </td>
+
+
                         </tr>
+                        <?php } ?>
+
                     </tbody>
                 </table>
             </div>

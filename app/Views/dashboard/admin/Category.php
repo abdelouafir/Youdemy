@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['category_name'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['category_id'])) {
     $id = $_POST['category_id']; 
     $delete = category::delete_category($conction,$id);
-    header("location: ./Category.php");
+      header("location: ./Category.php");
 }
 
 ?>
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['category_id'])) {
                             <td class="border border-gray-300 px-4 py-2"><?= $category['name'] ?></td>
                             <td class="border border-gray-300 px-4 py-2 text-center flex justify-center gap-2">
                                 <!-- Edit Button -->
-                            <form action="/ruturn/update_category.php" method="POST" class="inline-block">
+                            <form action="../../../Models/update_category.php" method="POST" class="inline-block">
                                 <input type="hidden" name="category_id" value="<?= $category['id'] ?>">
                                 <input type="text" name="category_name" 
                                     value="<?= $category['name'] ?>" 
