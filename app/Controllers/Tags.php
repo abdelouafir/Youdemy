@@ -25,6 +25,7 @@ class Tags {
     return $stmt->execute([$id]);
   }
   public static function update_tag($pdo, $id ,$new_title) {
+    echo "hello woled";
     $stmt = $pdo->prepare("UPDATE tags SET name = :name WHERE id = :id");
     $stmt->bindParam(':name', $new_title, PDO::PARAM_STR);  
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -46,6 +47,7 @@ public function get_tags($pdo) {
 
 public static function get_tag($pdo, $id) {
   $stmt = $pdo->prepare("SELECT * FROM tags WHERE id = :id");
+
   $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
   $stmt->execute(); 
 

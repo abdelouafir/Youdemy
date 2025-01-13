@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
   header("location: ./tags.php");
 }
 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
             <td class="px-4 py-2"><?=$tag['id'] ?></td>
             <td class="px-4 py-2"><?=$tag['name'] ?></td>
             <td class="px-4 py-2 text-center">
-              <form action="/ruturn/update.php" method="POST" class="inline-block">
+              <form action="../../../Models/updateTag.php" method="POST" class="inline-block">
               <input type="hidden" name="update_id" value="<?php echo $tag['id']; ?>">
               <button type="submit" class="ml-2 text-white py-2 px-3 rounded hover:bg-yellow-600">
               <i class="fa-solid fa-pen-to-square" style="color: #0b4ec1;"></i>
@@ -81,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
       <form action="./Tags.php" method="POST">
         <div class="mb-4">
           <label for="name" class="block text-gray-600 font-medium">Nom du Tag:</label>
-          <input type="text" id="name" name="title" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input type="text" id="name" name="title" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"> 
         </div>
         <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Ajouter</button>
       </form>
