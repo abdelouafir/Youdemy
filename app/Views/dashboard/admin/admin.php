@@ -1,3 +1,12 @@
+
+<?php 
+
+require_once dirname(__FILE__, 5).'/vendor/autoload.php';
+use app\Config\Database;
+$conn = new Database();
+$conction = $conn->getConnection();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 

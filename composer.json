@@ -1,0 +1,11 @@
+{
+    "name": "youcode/youdemy",
+    "description": "plateforme pour la gestion des cours online",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/"
+        }
+    },
+    "require": {}
+}
