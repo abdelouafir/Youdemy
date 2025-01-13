@@ -1,5 +1,5 @@
 <?php 
-namespace app\category;
+namespace app\Controllers;
 use pdo;
 class category {
 
@@ -41,7 +41,7 @@ class category {
       $stmt->execute(); 
       return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    
+
     public function  total_categorys($pdo){
       $sql = "SELECT COUNT(*) as 'total' FROM categories";
       $stmt = $pdo->prepare($sql);
