@@ -21,7 +21,6 @@ class Course {
            courses.video_link,
            users.username,
            users.email,
-
            categories.name AS category_name
         FROM courses
         JOIN users ON users.id = courses.teacher_id
@@ -81,6 +80,38 @@ class Course {
             echo "Une erreur est survenue lors de l'ajout du cours : " . $e->getMessage();
             return null;
         }
+    }
+    public function delete_cours($connection, $id) {
+        $sql = "DELETE FROM courses WHERE id = :id";
+        $stmt = $connection->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+    public function update_status($pdo, $id) {
+        $status = 'active';
+        $sql = "UPDATE courses 
+                SET status = :status
+                WHERE id = :id";
+    
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':id', $id);
+        $valur = $stmt->execute(); 
+        print_r($valur);
+        return $valur;
+    }
+    public function update_status_ban($pdo, $id) {
+        $status = 'attente';
+        $sql = "UPDATE courses 
+                SET status = :status
+                WHERE id = :id";
+    
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':id', $id);
+        $valur = $stmt->execute(); 
+        print_r($valur);
+        return $valur;
     }
     
 }

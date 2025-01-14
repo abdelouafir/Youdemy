@@ -7,6 +7,24 @@ $conn = new Database();
 $conction = $conn->getConnection();
 $selct = new Course();
 $courses = $selct->get_all__courses($conction);
+$cours_id = $_GET['delet_id'] ?? null;
+$id_active = $_GET['id_active'] ?? null;
+$block_id = $_GET['block_id'] ?? null;
+
+
+if($cours_id){
+    $selct->delete_cours($conction,$cours_id);
+    header("location: ./GestionContenus.php");
+}
+if($id_active){
+    $selct->update_status($conction,$id_active);
+    header("location: ./GestionContenus.php");
+}
+if($block_id){
+    $selct->update_status_ban($conction,$block_id);
+    header("location: ./GestionContenus.php");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -131,12 +149,14 @@ $courses = $selct->get_all__courses($conction);
                                 <i class="fas fa-eye"></i> 
                             </a>
 
-                            <a href="#" class="text-blue-600 hover:text-blue-900">
+                            <a href="./GestionContenus.php?block_id=<?php echo $course['id']?>" class="text-blue-600 hover:text-blue-900">
                                <i class="fas fa-ban"></i> 
                             </a>
-                            
-                       
-                            <a href="#" class="text-red-600 hover:text-red-900">
+                            <!-- <a href="#" class="text-blue-600 hover:text-blue-900 active:text-blue-900"> -->
+                            <a href="./GestionContenus.php?id_active=<?php echo $course['id']?>" class="text-green-600 hover:text-green-900">
+                                <i class="fas fa-check-circle"></i> 
+                            </a>
+                            <a href="./GestionContenus.php?delet_id=<?php echo $course['id']?>" class="text-red-600 hover:text-red-900">
                                 <i class="fas fa-trash-alt"></i> 
                             </a>
                         </div>
