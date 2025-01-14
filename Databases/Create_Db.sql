@@ -25,9 +25,14 @@ CREATE TABLE courses (
     content TEXT,
     teacher_id INT NOT NULL,
     category_id INT,
+    video_link VARCHAR(255), 
+    photo VARCHAR(255), 
+    status ENUM('active','attente') not NULL DEFAULT 'attente',
+    prix FLOAT,
     FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
 );
+
 
 CREATE TABLE tags (
     id INT AUTO_INCREMENT PRIMARY KEY,
