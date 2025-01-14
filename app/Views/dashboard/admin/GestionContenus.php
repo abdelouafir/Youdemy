@@ -97,7 +97,7 @@ $courses = $selct->get_all__courses($conction);
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="h-20 w-28 flex-shrink-0">
-                                        <img src="/api/placeholder/112/80" alt="" class="h-20 w-28 rounded-lg object-cover">
+                                        <img src="<?php echo $course['photo']?>" alt="" class="h-20 w-28 rounded-lg object-cover">
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900"><?= $course['title'] ?></div>
@@ -115,11 +115,11 @@ $courses = $selct->get_all__courses($conction);
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Publié
+                                    <?=$course['status'] ?>
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                49.99 €
+                                <?=$course['prix']?>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 245
@@ -127,7 +127,7 @@ $courses = $selct->get_all__courses($conction);
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div class="flex justify-end space-x-2">
                           
-                            <a href="#" class="text-gray-600 hover:text-gray-900">
+                            <a href="../courses/cours.php?cours_id=<?php echo $course['id']?>" class="text-gray-600 hover:text-gray-900">
                                 <i class="fas fa-eye"></i> 
                             </a>
 

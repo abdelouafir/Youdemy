@@ -8,7 +8,7 @@ CREATE TABLE users (
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role ENUM('student', 'Enseignant','admin') NOT NULL,
-    status ENUM('active','attente') not NULL DEFAULT 'attente'
+    status ENUM('active','block') not NULL DEFAULT 'active'
 );
 
 CREATE TABLE categories (
@@ -29,6 +29,8 @@ CREATE TABLE courses (
     photo VARCHAR(255), 
     status ENUM('active','attente') not NULL DEFAULT 'attente',
     prix FLOAT,
+    Durée TIME,
+    Niveau ENUM('Débutant', 'Intermédiaire', 'Avancé') not null DEFAULT 'Intermédiaire',
     FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
 );
