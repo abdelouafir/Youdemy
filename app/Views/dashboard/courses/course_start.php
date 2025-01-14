@@ -1,3 +1,17 @@
+
+<?php 
+require_once dirname(__FILE__, 5) . '/vendor/autoload.php';
+use app\Config\Database;
+use app\Models\Course;
+
+$conn = new Database();
+$conction = $conn->getConnection();
+$select = new Course();
+$cours_id = $_GET['cours_id'] ?? null;
+$cours = $select->get_cours($conction,$cours_id);
+
+
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -24,7 +38,7 @@
             <div class="mb-4">
                 <h3 class="font-semibold text-gray-800">Vidéo 1: Introduction au HTML</h3>
                 <div class="aspect-w-16 aspect-h-9">
-                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe class="w-full h-full" src="<?php echo $cours['video_link'];?>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
 
@@ -39,25 +53,18 @@
 
         <!-- Section PDF -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 class="font-bold text-gray-800 mb-4">Documents PDF</h2>
+            <h2 class="font-bold text-gray-800 mb-4">Documents </h2>
 
             <!-- PDF 1 -->
             <div class="mb-4">
-                <h3 class="font-semibold text-gray-800">PDF 1: Introduction au HTML</h3>
+                <h3 class="font-semibold text-gray-800"><?= $cours['title']?></h3>
                 <p class="text-gray-600 mb-2">
-                    Ce document PDF présente les bases du HTML, y compris la structure de la page et les balises essentielles. Il est parfait pour les débutants.
+                      <?=$cours['content']?>
                 </p>
                 <a href="path/to/your/file1.pdf" class="text-blue-600 hover:underline" target="_blank">Télécharger le PDF</a>
             </div>
 
-            <!-- PDF 2 -->
-            <div class="mb-4">
-                <h3 class="font-semibold text-gray-800">PDF 2: Structure de base en HTML</h3>
-                <p class="text-gray-600 mb-2">
-                    Ce document PDF détaille la structure de base d'une page HTML, avec des exemples et des explications sur chaque partie.
-                </p>
-                <a href="path/to/your/file2.pdf" class="text-blue-600 hover:underline" target="_blank">Télécharger le PDF</a>
-            </div>
+
         </div>
 
         <!-- Section Liens YouTube -->

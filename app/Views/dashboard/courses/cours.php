@@ -5,11 +5,13 @@ use app\Models\Course;
 
 $conn = new Database();
 $conction = $conn->getConnection();
-$selct = new Course();
+$select = new Course();
 $cours_id = $_GET['cours_id'] ?? null;
-var_dump($cours_id);
-
-
+if($cours_id != null){
+    $cours = $select->get_cours($conction,$cours_id);
+}
+echo $cours_id;
+var_dump($cours['id'])
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -25,17 +27,17 @@ var_dump($cours_id);
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
             <!-- En-tête du cours -->
             <div class="bg-blue-600 p-6 text-white">
-                <h1 class="text-2xl font-bold mb-2">Développement Web Frontend</h1>
-                <p class="text-blue-100">Apprenez HTML, CSS et JavaScript</p>
+                <h1 class="text-2xl font-bold mb-2"><?=$cours['title']?></h1>
+                <p class="text-blue-100"><?=$cours['description']?></p>
             </div>
 
             <div class="p-6">
                 <!-- Section instructeur -->
                 <div class="flex items-center space-x-4 mb-6">
-                    <img src="/api/placeholder/64/64" alt="Instructeur" class="w-16 h-16 rounded-full">
+                    <img src="<?= $cours['photo']?>" alt="Instructeur" class="w-16 h-16 rounded-full">
                     <div>
-                        <h3 class="font-semibold text-gray-800">Marie Dubois</h3>
-                        <p class="text-gray-600">Développeuse Senior Frontend</p>
+                        <h3 class="font-semibold text-gray-800"><?= $cours['username']?></h3>
+                        <p class="text-gray-600"><?=$cours['email']?></p>
                     </div>
                 </div>
 
@@ -59,28 +61,22 @@ var_dump($cours_id);
                 <div class="mb-6">
                     <h2 class="text-xl font-bold text-gray-800 mb-4">Description du cours</h2>
                     <p class="text-gray-600 mb-4">
-                        Ce cours complet vous permettra d'acquérir les compétences essentielles 
-                        en développement web frontend. Vous apprendrez à créer des sites web 
-                        interactifs et responsive en utilisant les technologies modernes.
+                        <?= $cours['description']?>
                     </p>
                     
-                    <h3 class="font-semibold text-gray-800 mb-2">Ce que vous apprendrez :</h3>
-                    <ul class="space-y-2 text-gray-600 list-disc pl-5 mb-6">
-                        <li>Les bases du HTML5 et CSS3</li>
-                        <li>JavaScript et programmation interactive</li>
-                        <li>Responsive design</li>
-                        <li>Bonnes pratiques de développement</li>
-                    </ul>
+
                 </div>
 
                 <!-- Prix et bouton d'inscription -->
                 <div class="border-t pt-6">
                     <div class="text-3xl font-bold text-green-600 mb-4">
-                        99,99 €
+                        <?= $cours['prix'].'dh'?>
                     </div>
-                    <button class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                        S'inscrire maintenant
-                    </button>
+                    <a href="./course_start.php?cours_id=<?php echo $cours_id ?>" 
+                        class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium text-center block">
+                            S'inscrire maintenant
+                    </a>
+
                 </div>
             </div>
         </div>

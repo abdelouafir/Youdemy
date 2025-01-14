@@ -18,7 +18,10 @@ class Course {
            courses.photo,
            courses.prix,
            courses.status,
+           courses.video_link,
            users.username,
+           users.email,
+
            categories.name AS category_name
         FROM courses
         JOIN users ON users.id = courses.teacher_id
@@ -28,6 +31,30 @@ class Course {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC); 
     }
+    public function get_cours($pdo, $id) {
+        $sql = "SELECT 
+            courses.id,
+            courses.title,
+            courses.content,
+            courses.description,
+            courses.photo,
+            courses.prix,
+            courses.status,
+            courses.video_link,
+            users.username,
+            users.email,
+            categories.name AS category_name
+        FROM courses
+        JOIN users ON users.id = courses.teacher_id
+        JOIN categories ON categories.id = courses.category_id
+        WHERE courses.id = :id"; 
+    
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC); 
+    }
+    
 
     public function add_cours($pdo, $title, $description, $content, $category_id, $user, $video_link, $photo, $prix) {
         try {
