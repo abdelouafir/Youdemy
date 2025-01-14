@@ -6,8 +6,8 @@ CREATE TABLE users (
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('student', 'Enseignant', 'admin') NOT NULL,
-    is_active BOOLEAN DEFAULT TRUE
+    role ENUM('student', 'Enseignant','admin') NOT NULL,
+    status ENUM('active','block') not NULL DEFAULT 'active'
 );
 
 CREATE TABLE categories (
@@ -24,9 +24,16 @@ CREATE TABLE courses (
     content TEXT,
     teacher_id INT NOT NULL,
     category_id INT,
+    video_link VARCHAR(255), 
+    photo VARCHAR(255), 
+    status ENUM('active','attente') not NULL DEFAULT 'attente',
+    prix FLOAT,
+    Durée TIME,
+    Niveau ENUM('Débutant', 'Intermédiaire', 'Avancé') not null DEFAULT 'Intermédiaire',
     FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
 );
+
 
 CREATE TABLE tags (
     id INT AUTO_INCREMENT PRIMARY KEY,

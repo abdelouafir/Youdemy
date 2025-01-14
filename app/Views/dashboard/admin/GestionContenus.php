@@ -1,3 +1,31 @@
+<?php 
+require_once dirname(__FILE__, 5) . '/vendor/autoload.php';
+use app\Config\Database;
+use app\Models\Course;
+
+$conn = new Database();
+$conction = $conn->getConnection();
+$selct = new Course();
+$courses = $selct->get_all__courses($conction);
+$cours_id = $_GET['delet_id'] ?? null;
+$id_active = $_GET['id_active'] ?? null;
+$block_id = $_GET['block_id'] ?? null;
+
+
+if($cours_id){
+    $selct->delete_cours($conction,$cours_id);
+    header("location: ./GestionContenus.php");
+}
+if($id_active){
+    $selct->update_status($conction,$id_active);
+    header("location: ./GestionContenus.php");
+}
+if($block_id){
+    $selct->update_status_ban($conction,$block_id);
+    header("location: ./GestionContenus.php");
+}
+
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -82,21 +110,22 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <!-- Course Row 1 -->
+                         <?php foreach($courses as $course) { ?>
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="h-20 w-28 flex-shrink-0">
-                                        <img src="/api/placeholder/112/80" alt="" class="h-20 w-28 rounded-lg object-cover">
+                                        <img src="<?php echo $course['photo']?>" alt="" class="h-20 w-28 rounded-lg object-cover">
                                     </div>
                                     <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">JavaScript Avancé 2025</div>
+                                        <div class="text-sm font-medium text-gray-900"><?= $course['title'] ?></div>
                                         <div class="text-sm text-gray-500">20 leçons • 15h de contenu</div>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                    Développement Web
+                                    <?= $course['category_name'] ?>
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -104,105 +133,37 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Publié
+                                    <?=$course['status'] ?>
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                49.99 €
+                                <?=$course['prix']?>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 245
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex justify-end space-x-2">
-                                    <button class="text-gray-600 hover:text-gray-900">Aperçu</button>
-                                    <button class="text-blue-600 hover:text-blue-900">Éditer</button>
-                                    <button class="text-red-600 hover:text-red-900">Supprimer</button>
-                                </div>
-                            </td>
-                        </tr>
+                            <div class="flex justify-end space-x-2">
+                          
+                            <a href="../courses/cours.php?cours_id=<?php echo $course['id']?>" class="text-gray-600 hover:text-gray-900">
+                                <i class="fas fa-eye"></i> 
+                            </a>
 
-                        <!-- Course Row 2 -->
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="h-20 w-28 flex-shrink-0">
-                                        <img src="/api/placeholder/112/80" alt="" class="h-20 w-28 rounded-lg object-cover">
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">UI/UX Design Masterclass</div>
-                                        <div class="text-sm text-gray-500">15 leçons • 12h de contenu</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
-                                    Design
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">Marie Dubois</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                    En révision
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                59.99 €
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                178
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex justify-end space-x-2">
-                                    <button class="text-gray-600 hover:text-gray-900">Aperçu</button>
-                                    <button class="text-blue-600 hover:text-blue-900">Éditer</button>
-                                    <button class="text-red-600 hover:text-red-900">Supprimer</button>
-                                </div>
-                            </td>
-                        </tr>
+                            <a href="./GestionContenus.php?block_id=<?php echo $course['id']?>" class="text-blue-600 hover:text-blue-900">
+                               <i class="fas fa-ban"></i> 
+                            </a>
+                            <!-- <a href="#" class="text-blue-600 hover:text-blue-900 active:text-blue-900"> -->
+                            <a href="./GestionContenus.php?id_active=<?php echo $course['id']?>" class="text-green-600 hover:text-green-900">
+                                <i class="fas fa-check-circle"></i> 
+                            </a>
+                            <a href="./GestionContenus.php?delet_id=<?php echo $course['id']?>" class="text-red-600 hover:text-red-900">
+                                <i class="fas fa-trash-alt"></i> 
+                            </a>
+                        </div>
 
-                        <!-- Course Row 3 -->
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="h-20 w-28 flex-shrink-0">
-                                        <img src="/api/placeholder/112/80" alt="" class="h-20 w-28 rounded-lg object-cover">
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">Marketing Digital 2025</div>
-                                        <div class="text-sm text-gray-500">25 leçons • 20h de contenu</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
-                                    Marketing
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">Pierre Durand</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                                    Brouillon
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                79.99 €
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                0
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex justify-end space-x-2">
-                                    <button class="text-gray-600 hover:text-gray-900">Aperçu</button>
-                                    <button class="text-blue-600 hover:text-blue-900">Éditer</button>
-                                    <button class="text-red-600 hover:text-red-900">Supprimer</button>
-                                </div>
                             </td>
                         </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
