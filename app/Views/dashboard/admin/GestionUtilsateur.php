@@ -9,6 +9,26 @@ $conction = $conn->getConnection();
 $select = new admin();
 $users = $select->get_all_users($conction);
 
+$id_delete = $_GET['id_delete'] ?? null;
+$id_active = $_GET['id_active'] ?? NULL;
+$id_ban = $_GET['id_ban'] ?? NULL;
+
+var_dump($id_delete);
+if($id_delete != null){
+    $select->delete_user($conction,$id_delete);
+    header("location: ./GestionUtilsateur.php");
+}
+// virifre id active 
+if($id_active != null){
+    $select->update_status($conction,$id_active);
+    header("location: ./GestionUtilsateur.php");
+}
+// virifre id ban
+if($id_ban != null){
+    $select->update_status_ban($conction,$id_ban);
+    header("location: ./GestionUtilsateur.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -111,7 +131,7 @@ $users = $select->get_all_users($conction);
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Actif
+                                    <?= $user['status']?>
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -120,26 +140,18 @@ $users = $select->get_all_users($conction);
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <div class="flex justify-end space-x-2">
                                
-                                    <button class="text-red-600 hover:text-red-900">
+                                    <a href="./GestionUtilsateur.php?id_ban=<?php echo $user['id']?>"  class="text-red-600 hover:text-red-900">
                                         <i class="fas fa-ban"></i> 
-                                        
-                                    </button>
+                                    </a>
               
-                                    <button class="text-green-600 hover:text-green-900">
+                                    <a href="./GestionUtilsateur.php?id_active=<?php echo $user['id']?>" class="text-green-600 hover:text-green-900">
                                         <i class="fas fa-check-circle"></i> 
-                                        
-                                    </button>
-
-                                 
-                                    <button class="text-gray-600 hover:text-gray-900">
-                                        <i class="fas fa-trash-alt"></i> 
-                                        
-                                    </button>
+                                    </a>
+                                    <a href="./GestionUtilsateur.php?id_delete=<?php echo $user['id']?>" class="text-gray-600 hover:text-gray-900">
+                                        <i class="fas fa-trash-alt"></i>   
+                                    </a>
                                 </div>
                             </td>
-
-
-
                         </tr>
                         <?php } ?>
 
