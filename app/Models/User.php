@@ -1,39 +1,37 @@
 <?php 
 namespace app\Models;
-use pdo;
-class user {
+use PDO;
+
+class User {
     protected $user_name;
     protected $email;
     protected $password;
     protected $role;
 
-    // view cataloge
-    // public function __construct($user_name,$email,$password,$role)
-    // {
-    //     $this->$user_name = $user_name;
-    //     $this->$email = $email;
-    //     $this->password = $password;
-    //     $this->role = $role;
-    // }
-    // public function get_name (){
-    //     return $this->user_name;
-    // }
-    // public function get_email (){
-    //     return $this->user_name;
-    // }
+    // Constructeur
+    public function __construct($user_name, $email, $password, $role)
+    {
+        $this->user_name = $user_name;
+        $this->email = $email;
+        $this->password = $password;
+        $this->role = $role;
+    }
 
-    // public function get_password (){
-    //     return $this->user_name;
-    // }
+    // Getters
+    public function get_name() {
+        return $this->user_name;
+    }
 
-    // public function get_role (){
-    //     return $this->role;
-    // }
+    public function get_email() {
+        return $this->email;
+    }
 
+    public function get_password() {
+        return $this->password;
+    }
 
-    // public function create_compte(){
-        
-    // }
-
+    public function get_role() {
+        return $this->role;
+    }
 }
-?> 
+?>

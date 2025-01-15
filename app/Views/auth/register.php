@@ -1,12 +1,28 @@
-<? require_once dirname(__FILE__, 5) . '/vendor/autoload.php';
+<?php 
+
+ require_once dirname(__FILE__, 4) . '/vendor/autoload.php';
 use app\Config\Database;
+use app\Models\user;
+use app\Models\Enrollment;
+
+
 $conn = new Database();
 $conction = $conn->getConnection();
+
+
+
+
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $role = $_POST['role'];     
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
     $password_confirm = $_POST['confirmPassword'];
+    // $user = new user;
+    // var_dump($role) ;
+    $Enrollment = new Enrollment($username,$email,$password,$role);
+    $Enrollment->register($conction);
+
 }
 ?>
 <!DOCTYPE html>
@@ -37,7 +53,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 </p>
             </div>
             
-            <form class="mt-8 space-y-6">
+            <form method="POST" action="./register.php"  class="mt-8 space-y-6">
                 <!-- Role Selection -->
                 <div class="grid grid-cols-2 gap-4">
                     <div class="relative">
