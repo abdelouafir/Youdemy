@@ -1,3 +1,14 @@
+<? require_once dirname(__FILE__, 5) . '/vendor/autoload.php';
+use app\Config\Database;
+$conn = new Database();
+$conction = $conn->getConnection();
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $password_confirm = $_POST['confirmPassword'];
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -48,19 +59,12 @@
 
                 <!-- Personal Information -->
                 <div class="space-y-4">
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 gap-4">
                         <div>
-                            <label for="firstName" class="block text-sm font-medium text-gray-700">
-                                Prénom
+                            <label for="username" class="block text-sm font-medium text-gray-700">
+                                user name
                             </label>
-                            <input type="text" id="firstName" name="firstName" required
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
-                        </div>
-                        <div>
-                            <label for="lastName" class="block text-sm font-medium text-gray-700">
-                                Nom
-                            </label>
-                            <input type="text" id="lastName" name="lastName" required
+                            <input type="text" id="username" name="username" required
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
                         </div>
                     </div>
