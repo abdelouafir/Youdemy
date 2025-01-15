@@ -1,3 +1,22 @@
+<?php 
+require_once dirname(__FILE__, 4) . '/vendor/autoload.php';
+use app\Config\Database;
+use app\Models\Login;
+
+$conn = new Database();
+$login = new Login();
+$conction = $conn->getConnection();
+
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    // $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $login->login($conction,$email,$password);
+    header("location: ../dashboard/admin/admin.php");
+    
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -28,7 +47,7 @@
             </div>
 
             <!-- Form -->
-            <form class="mt-8 space-y-6">
+            <form action="./login.php" method="POST" class="mt-8 space-y-6">
                 <!-- Email Field -->
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700">

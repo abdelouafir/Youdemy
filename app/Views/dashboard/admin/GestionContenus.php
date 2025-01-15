@@ -11,7 +11,6 @@ $cours_id = $_GET['delet_id'] ?? null;
 $id_active = $_GET['id_active'] ?? null;
 $block_id = $_GET['block_id'] ?? null;
 
-
 if($cours_id){
     $selct->delete_cours($conction,$cours_id);
     header("location: ./GestionContenus.php");

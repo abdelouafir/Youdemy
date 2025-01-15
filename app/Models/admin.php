@@ -3,10 +3,7 @@ namespace app\Models;
 use pdo;
 use PDOException;
 require_once dirname(__FILE__, 3) . '/vendor/autoload.php';
-
 use app\Models\user;
-
-
 class admin extends user {
 
     public function get_all_users ($pdo){
@@ -43,7 +40,7 @@ class admin extends user {
             return $valur;
         }
         public function update_status_ban($pdo, $id) {
-            $status = 'attente';
+            $status = 'block';
             $sql = "UPDATE users 
                     SET status = :status
                     WHERE id = :id";
