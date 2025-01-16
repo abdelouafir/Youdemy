@@ -26,6 +26,7 @@ if($id_active != null){
 // virifre id ban
 if($id_ban != null){
     $select->update_status_ban($conction,$id_ban);
+    echo $id_ban;
     header("location: ./GestionUtilsateur.php");
 }
 

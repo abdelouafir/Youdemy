@@ -9,13 +9,13 @@ class User {
     protected $role;
 
     // Constructeur
-    public function __construct($user_name, $email, $password, $role)
-    {
-        $this->user_name = $user_name;
-        $this->email = $email;
-        $this->password = $password;
-        $this->role = $role;
-    }
+    // public function __construct($user_name, $email, $password, $role)
+    // {
+    //     $this->user_name = $user_name;
+    //     $this->email = $email;
+    //     $this->password = $password;
+    //     $this->role = $role;
+    // }
 
     public function register($pdo) {
         $passwordHash = password_hash($this->password, PASSWORD_DEFAULT);
@@ -33,30 +33,30 @@ class User {
         }
     }
 
-    public function login($pdo, $email, $password) {
-        $sql = "SELECT * FROM USERS WHERE email = :email";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    // public function login($pdo, $email, $password) {
+    //     $sql = "SELECT * FROM USERS WHERE email = :email";
+    //     $stmt = $pdo->prepare($sql);
+    //     $stmt->bindParam(':email', $email);
+    //     $stmt->execute();
+    //     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-        if ($user) {
-            if (password_verify($password, $user['password_hash'])) {
-                echo "corcted";
-                session_start();
-                $_SESSION['user'] =  $user;
-            } else {
-                echo "no corected";
-                echo $user['password_hash'];
-            }
-        } else {
-            return [
-                'status' => false,
-                'message' => 'User not found'
-            ];
-        }
-    }
+    //     if ($user) {
+    //         if (password_verify($password, $user['password_hash'])) {
+    //             echo "corcted";
+    //             session_start();
+    //             $_SESSION['user'] =  $user;
+    //         } else {
+    //             echo "no corected";
+    //             echo $user['password_hash'];
+    //         }
+    //     } else {
+    //         return [
+    //             'status' => false,
+    //             'message' => 'User not found'
+    //         ];
+    //     }
+    // }
 
 
     // Getters
