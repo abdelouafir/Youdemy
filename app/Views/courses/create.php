@@ -1,34 +1,37 @@
-<?php 
-// require_once dirname(__FILE__, 4) . '/vendor/autoload.php';
-require_once "../../../vendor/autoload.php";
-use app\Config\Database;
-// use app\Models\Course;
-use app\Controllers\CourseManager;
+        <?php 
+        // require_once dirname(__FILE__, 4) . '/vendor/autoload.php';
+        require_once "../../../vendor/autoload.php";
+        use app\Config\Database;
+        use app\Models\Tags;
+        // use app\Models\Course;
+        use app\Controllers\CourseManager;
 
-$conn = new Database();
-$conction = $conn->getConnection();
+        $conn = new Database();
+        $get_tags = new Tags();
+        $conction = $conn->getConnection();
 
-$creat_cours = new CourseManager($conction);
+        $tags = $get_tags->get_tags($conction);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $type = $_POST['type']; 
-    $title = $_POST['title'];
-    $description = $_POST['description'];
+        $creat_cours = new CourseManager($conction);
 
-    $content = ($type === 'video') ? $_POST['video-url'] : $_POST['document'];
 
-    $duration = $_POST['duration'];
-    $price = (float)$_POST['price'];
-    $image_url = $_POST['image-url'];
-    $teacherId = 2;
-    $status = 1; 
-    $level = $_POST['level']; 
-    // $teacherId = $_POST['teacherId']; 
-    $extraContent = ($type === 'document') ? $_POST['document'] : '';
-
-    $creat_cours->createCourse($type, $title, $description,$content,$image_url, $status, $price, $level, $teacherId);
-}
-?>
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $type = $_POST['type']; 
+            $title = $_POST['title'];
+            $description = $_POST['description'];
+            $content = ($type === 'video') ? $_POST['video-url'] : $_POST['document'];
+            $tags = $_POST['tags'] ?? [];  
+            $duration = $_POST['duration'];
+            $price = (float)$_POST['price'];
+            $image_url = $_POST['image-url'];
+            $teacherId = 2;
+            $status = 1; 
+            $level = $_POST['level']; 
+            // $teacherId = $_POST['teacherId'];
+            $extraContent = ($type === 'document') ? $_POST['document'] : '';
+            $creat_cours->createCourse($type, $title, $description,$content,$image_url, $status, $price, $level, $teacherId);
+        }
+        ?>
 
 
 <!DOCTYPE html>
@@ -37,7 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajouter un cours</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+<!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+
+
     <script>
         function updateInputFields() {
             const type = document.getElementById('type').value;
@@ -75,8 +85,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="text" name="title" class="w-full px-4 py-2 border rounded-lg" placeholder="Titre">
                     </div>
                     <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
+                        <select name="category" class="w-full px-4 py-2 border rounded-lg">
+                            <option value="">Sélectionner une catégorie</option>
+                            <option value="developpement">Développement</option>
+                            <option value="design">Design</option>
+                            <option value="marketing">Marketing Digital</option>
+                            <option value="business">Business</option>
+                            <option value="informatique">Informatique</option>
+                            <option value="langues">Langues</option>
+                            <option value="musique">Musique</option>
+                            <option value="photographie">Photographie</option>
+                            <option value="sante">Santé & Bien-être</option>
+                            <option value="cuisine">Cuisine</option>
+                            <option value="art">Art & Créativité</option>
+                            <option value="finance">Finance & Comptabilité</option>
+                        </select>
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Description courte</label>
                         <input type="text" name="description" class="w-full px-4 py-2 border rounded-lg" placeholder="Description courte">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+                    <select id="tags" name="tags[]" multiple class="w-full px-4 py-2 border rounded-lg">
+                        <?php foreach($tags as $tag) {?>
+                        <option value="<?php echo $tag['id'] ?>"><?php echo $tag['name'] ?></option>
+                        <?php } ?>
+                       
+                    </select>
+
+                        <p class="text-sm text-gray-500 mt-1">Maintenez Ctrl (Windows) ou Cmd (Mac) pour sélectionner plusieurs tags</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Niveau</label>
@@ -137,5 +176,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </form>
     </div>
+    <script>
+    new TomSelect("#tags", {
+        maxItems: 10,
+        create: false,
+        placeholder: 'Select tags...',
+    });
+   </script>
 </body>
 </html>

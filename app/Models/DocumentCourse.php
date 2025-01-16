@@ -35,7 +35,7 @@ class DocumentCourse extends Course {
 
     public function add_cours($pdo) {
         try {
-
+            
             $sql = "INSERT INTO courses (title, description, content, photo,teacher_id)
                     VALUES (:title, :description, :content, :photo, :teacher_id)";
             $stmt = $pdo->prepare($sql);

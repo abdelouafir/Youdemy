@@ -1,5 +1,5 @@
 <?php 
-namespace app\Controllers;
+namespace app\Models;
 use pdo;
 class Tags {
 
@@ -60,6 +60,20 @@ public function totale_tags($pdo){
   $stmt->execute();
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
   return $result['totale'];
+}
+ public function insert_tag($pdo,$cours_id,$tag_id){
+  $sql = "INSERT INTO course_tags (article_id,tag_id)
+  VALUES (:cours_id, :tag_id)";
+  $stmt = $pdo->prepare($sql);
+  foreach ($tag_id as $tag_id) {
+     $stmt->bindParam(':cours_id', $cours_id);
+     $stmt->bindParam(':tag_id', $tag_id);
+     if (!$stmt->execute()) {
+         echo "Error occurred while adding tag ID: " . $tag_id;
+         return false; 
+     }
+ }
+ return true;
 }
 }
 
