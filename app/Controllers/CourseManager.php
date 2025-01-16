@@ -20,10 +20,10 @@ class CourseManager {
     
         if ($type === 'video') {
             $VideoCourse = new VideoCourse($title, $description,$videoLink,$photo, $status,$level,$teacherId);
-            echo $price;
             $VideoCourse->add_cours($this->conction);
         } elseif ($type === 'document') {
-            return new DocumentCourse($title, $description, $photo, $status, $price, $level, $teacherId,$videoLink);
+            $documont_cours = new DocumentCourse($title, $description, $photo, $status, $price, $level, $teacherId,$videoLink);
+            $documont_cours->add_cours($this->conction);
         } else {
             return "les type de doner no coerct";
         }

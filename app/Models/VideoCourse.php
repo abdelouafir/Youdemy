@@ -26,7 +26,6 @@ class VideoCourse extends Course {
 
     public function add_cours($pdo) {
         try {
-
             $sql = "INSERT INTO courses (title, description, content, photo, video_link,teacher_id)
                     VALUES (:title, :description, :content, :photo, :video_link, :teacher_id)";
             
@@ -41,7 +40,7 @@ class VideoCourse extends Course {
 
             // $stmt->bindParam(':prix', $this->prix); 
             $stmt->bindParam(':video_link', $this->videoLink); 
-    
+
             // Exécuter la requête
             if ($stmt->execute()) {
                 $lastInsertedId = $pdo->lastInsertId();

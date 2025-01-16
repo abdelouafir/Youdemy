@@ -1,16 +1,16 @@
 <?php 
 require_once dirname(__FILE__, 5) . '/vendor/autoload.php';
 use app\Config\Database;
-use app\Models\Course;
+use app\Models\Enrollment;
 
 $conn = new Database();
 $conction = $conn->getConnection();
-$selct = new Course();
-$courses = $selct->get_all__courses($conction);
+$selct = new Enrollment();
+$courses = $selct->get_all_courses($conction);
 $cours_id = $_GET['delet_id'] ?? null;
 $id_active = $_GET['id_active'] ?? null;
 $block_id = $_GET['block_id'] ?? null;
-
+// var_dump ($courses);
 if($cours_id){
     $selct->delete_cours($conction,$cours_id);
     header("location: ./GestionContenus.php");
