@@ -1,11 +1,11 @@
 <?php 
 require_once dirname(__FILE__, 5) . '/vendor/autoload.php';
 use app\Config\Database;
-use app\Models\Course;
+use app\Models\Enrollment;
 
 $conn = new Database();
 $conction = $conn->getConnection();
-$select = new Course();
+$select = new Enrollment();
 $cours_id = $_GET['cours_id'] ?? null;
 if($cours_id != null){
     $cours = $select->get_cours($conction,$cours_id);
