@@ -12,10 +12,11 @@ abstract class Course {
     protected string $niveau;
     protected string $enseignant;
     protected string $student;
+    protected $category;
     // protected string $teacher_id;
 
     
-    public function __construct($title,$descreption,$countent,$photo,$status,$niveau,$enseignant)
+    public function __construct($title,$descreption,$countent,$photo,$status,$niveau,$enseignant,$category)
     {
         $this->title = $title;
         $this->enseignant = $enseignant;
@@ -25,6 +26,7 @@ abstract class Course {
         $this->status = $status;
         // $this->prix = $prix;
         $this->niveau = $niveau;
+        $this->category = $category;
     }
 
     abstract public function add_cours($pdo);

@@ -1,5 +1,5 @@
 <?php 
-namespace app\Controllers;
+namespace app\Models;
 use pdo;
 class category {
 

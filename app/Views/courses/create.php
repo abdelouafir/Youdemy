@@ -2,13 +2,16 @@
         // require_once dirname(__FILE__, 4) . '/vendor/autoload.php';
         require_once "../../../vendor/autoload.php";
         use app\Config\Database;
+        use app\Models\category;
         use app\Models\Tags;
         // use app\Models\Course;
         use app\Controllers\CourseManager;
 
         $conn = new Database();
         $get_tags = new Tags();
+        $get_category = new category();
         $conction = $conn->getConnection();
+        $categorys = $get_category->get_categories($conction);
 
         $tags = $get_tags->get_tags($conction);
 
@@ -20,8 +23,9 @@
             $title = $_POST['title'];
             $description = $_POST['description'];
             $content = ($type === 'video') ? $_POST['video-url'] : $_POST['document'];
-            $tags = $_POST['tags'] ?? [];  
+            $tags_insert = $_POST['tags'] ?? [];  
             $duration = $_POST['duration'];
+            $category = $_POST['category'];
             $price = (float)$_POST['price'];
             $image_url = $_POST['image-url'];
             $teacherId = 2;
@@ -29,7 +33,14 @@
             $level = $_POST['level']; 
             // $teacherId = $_POST['teacherId'];
             $extraContent = ($type === 'document') ? $_POST['document'] : '';
-            $creat_cours->createCourse($type, $title, $description,$content,$image_url, $status, $price, $level, $teacherId);
+            $id_cours =  $creat_cours->createCourse($type, $title, $description,$content,$image_url, $status, $price, $level, $teacherId,$category);
+
+            if ($id_cours) {
+                $get_tags->insert_tag($conction, $id_cours, $tags_insert);
+            } else {
+                echo "Erreur lors de l'ajout de l'article.";
+            }
+          
         }
         ?>
 
@@ -87,19 +98,9 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
                         <select name="category" class="w-full px-4 py-2 border rounded-lg">
-                            <option value="">Sélectionner une catégorie</option>
-                            <option value="developpement">Développement</option>
-                            <option value="design">Design</option>
-                            <option value="marketing">Marketing Digital</option>
-                            <option value="business">Business</option>
-                            <option value="informatique">Informatique</option>
-                            <option value="langues">Langues</option>
-                            <option value="musique">Musique</option>
-                            <option value="photographie">Photographie</option>
-                            <option value="sante">Santé & Bien-être</option>
-                            <option value="cuisine">Cuisine</option>
-                            <option value="art">Art & Créativité</option>
-                            <option value="finance">Finance & Comptabilité</option>
+                            <?php foreach ($categorys as $category) {?>
+                            <option value="<?php echo $category['id']?>"><?php echo $category['name'] ?></option>
+                            <?php } ?>
                         </select>
                     </div>
                     <div>

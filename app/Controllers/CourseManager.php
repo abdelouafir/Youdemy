@@ -16,13 +16,14 @@ class CourseManager {
     {
         $this->conction = $conction;
     }
-    public function createCourse($type,$title,$description,$videoLink,$photo,$status,$price,$level,$teacherId) {
+    public function createCourse($type,$title,$description,$videoLink,$photo,$status,$price,$level,$teacherId,$category) {
     
         if ($type === 'video') {
-            $VideoCourse = new VideoCourse($title, $description,$videoLink,$photo, $status,$level,$teacherId);
-            $VideoCourse->add_cours($this->conction);
+             $VideoCourse = new VideoCourse($title, $description,$videoLink,$photo, $status,$level,$teacherId,$category);
+             $id_cours = $VideoCourse->add_cours($this->conction);
+            return $id_cours;
         } elseif ($type === 'document') {
-            $documont_cours = new DocumentCourse($title, $description, $photo, $status, $price, $level, $teacherId,$videoLink);
+            $documont_cours = new DocumentCourse($title, $description, $photo, $status, $price, $level, $teacherId,$videoLink,$category);
             $documont_cours->add_cours($this->conction);
         } else {
             return "les type de doner no coerct";

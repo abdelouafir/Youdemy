@@ -13,7 +13,6 @@ class Tags {
     }
    }
   
-   
    public static function create_tags($pdo,$name) {
     $sql = "INSERT INTO tags (name) VALUES (?)";
     $stmt = $pdo->prepare($sql);
@@ -39,6 +38,7 @@ public function setvalue($id){
 public function getvalue(){
   return $this->id;
 }
+
 public function get_tags($pdo) {
   $stmt = $pdo->prepare("SELECT * FROM tags");
   $stmt->execute();  
@@ -62,11 +62,11 @@ public function totale_tags($pdo){
   return $result['totale'];
 }
  public function insert_tag($pdo,$cours_id,$tag_id){
-  $sql = "INSERT INTO course_tags (article_id,tag_id)
-  VALUES (:cours_id, :tag_id)";
+  $sql = "INSERT INTO course_tags (course_id,tag_id)
+  VALUES (:course_id, :tag_id)";
   $stmt = $pdo->prepare($sql);
   foreach ($tag_id as $tag_id) {
-     $stmt->bindParam(':cours_id', $cours_id);
+     $stmt->bindParam(':course_id', $cours_id);
      $stmt->bindParam(':tag_id', $tag_id);
      if (!$stmt->execute()) {
          echo "Error occurred while adding tag ID: " . $tag_id;
