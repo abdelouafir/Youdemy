@@ -17,6 +17,14 @@
 
         $creat_cours = new CourseManager($conction);
 
+        session_start();
+        
+        $data = $_SESSION['user'] ;
+        if($data){
+            echo "hello user";
+        }
+
+        var_dump($data['id']);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $type = $_POST['type']; 
@@ -28,13 +36,12 @@
             $category = $_POST['category'];
             $price = (float)$_POST['price'];
             $image_url = $_POST['image-url'];
-            $teacherId = 2;
+            $teacherId = $data['id'];
             $status = 1; 
             $level = $_POST['level']; 
             // $teacherId = $_POST['teacherId'];
             $extraContent = ($type === 'document') ? $_POST['document'] : '';
             $id_cours =  $creat_cours->createCourse($type, $title, $description,$content,$image_url, $status, $price, $level, $teacherId,$category);
-
             if ($id_cours) {
                 $get_tags->insert_tag($conction, $id_cours, $tags_insert);
             } else {
@@ -52,8 +59,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajouter un cours</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
-<!-- CSS -->
+     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>

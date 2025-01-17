@@ -6,6 +6,15 @@ use app\Config\Database;
 $conn = new Database();
 $conction = $conn->getConnection();
 
+session_start();
+        
+$data = $_SESSION['user'] ;
+if($data){
+    echo "hello user";
+}
+
+var_dump($data);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

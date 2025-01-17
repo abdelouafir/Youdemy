@@ -2,14 +2,15 @@
 <?php 
 require_once dirname(__FILE__, 5) . '/vendor/autoload.php';
 use app\Config\Database;
-use app\Models\Course;
+use app\Models\Enrollment;
 
 $conn = new Database();
 $conction = $conn->getConnection();
-$select = new Course();
+$select = new Enrollment();
 $cours_id = $_GET['cours_id'] ?? null;
-$cours = $select->get_cours($conction,$cours_id);
 
+$cours = $select->get_cours($conction,$cours_id);
+var_dump($cours['type']);
 
 ?>
 <!DOCTYPE html>
@@ -26,63 +27,69 @@ $cours = $select->get_cours($conction,$cours_id);
         <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
             <div class="bg-blue-600 p-6 text-white">
                 <h1 class="text-2xl font-bold mb-2">Contenu du Cours</h1>
-                <p class="text-blue-100">Apprenez le développement web avec des vidéos et des PDF</p>
+                <p class="text-blue-100"><?= $cours['title'] ?></p>
             </div>
         </div>
 
-        <!-- Section Vidéos -->
+        <!-- Contenu Dynamique -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 class="font-bold text-gray-800 mb-4">Vidéos de Cours</h2>
-
-            <!-- Vidéo 1 -->
-            <div class="mb-4">
-                <h3 class="font-semibold text-gray-800">Vidéo 1: Introduction au HTML</h3>
-                <div class="aspect-w-16 aspect-h-9">
-                    <iframe class="w-full h-full" src="<?php echo $cours['video_link'];?>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <?php if($cours['type'] === 'video'): ?>
+                <!-- Affichage de la vidéo -->
+                <h2 class="font-bold text-gray-800 mb-4">Vidéo du cours</h2>
+                <div class="mb-4">
+                    <h3 class="font-semibold text-gray-800"><?= $cours['title'] ?></h3>
+                    <div class="aspect-w-16 aspect-h-9">
+                        <iframe 
+                            class="w-full h-full" 
+                            src="<?= $cours['video_link'] ?>" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <?php if(!empty($cours['description'])): ?>
+                        <p class="mt-4 text-gray-600"><?= $cours['description'] ?></p>
+                    <?php endif; ?>
                 </div>
-            </div>
-
-            <!-- Vidéo 2 -->
-            <div class="mb-4">
-                <h3 class="font-semibold text-gray-800">Vidéo 2: Structure de base en HTML</h3>
-                <div class="aspect-w-16 aspect-h-9">
-                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/kXYiU_JCYtU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <?php elseif($cours['type'] === 'document'): ?>
+                <!-- Affichage du document -->
+                <h2 class="font-bold text-gray-800 mb-4">Document du cours</h2>
+                <div class="mb-4">
+                    <h3 class="font-semibold text-gray-800"><?= $cours['title'] ?></h3>
+                    <div class="bg-gray-50 rounded-lg p-6 mt-4">
+                        <div class="prose max-w-none">
+                            <?= $cours['content'] ?>
+                        </div>
+                    </div>
+                    <?php if(!empty($cours['document_url'])): ?>
+                        <div class="mt-4">
+                            <a 
+                                href="<?= $cours['document_url'] ?>" 
+                                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                                target="_blank"
+                            >
+                                Télécharger le document
+                            </a>
+                        </div>
+                    <?php endif; ?>
                 </div>
-            </div>
+            <?php endif; ?>
         </div>
 
-        <!-- Section PDF -->
+        <!-- Section Ressources Supplémentaires -->
+        <?php if(!empty($cours['additional_resources'])): ?>
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 class="font-bold text-gray-800 mb-4">Documents </h2>
-
-            <!-- PDF 1 -->
-            <div class="mb-4">
-                <h3 class="font-semibold text-gray-800"><?= $cours['title']?></h3>
-                <p class="text-gray-600 mb-2">
-                      <?=$cours['content']?>
-                </p>
-                <a href="path/to/your/file1.pdf" class="text-blue-600 hover:underline" target="_blank">Télécharger le PDF</a>
-            </div>
-
-
+            <h2 class="font-bold text-gray-800 mb-4">Ressources Supplémentaires</h2>
+            <?php foreach($cours['additional_resources'] as $resource): ?>
+                <div class="mb-4">
+                    <h3 class="font-semibold text-gray-800"><?= $resource['title'] ?></h3>
+                    <a href="<?= $resource['link'] ?>" class="text-blue-600 hover:underline" target="_blank">
+                        <?= $resource['type'] === 'video' ? 'Regarder la vidéo' : 'Consulter la ressource' ?>
+                    </a>
+                </div>
+            <?php endforeach; ?>
         </div>
-
-        <!-- Section Liens YouTube -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 class="font-bold text-gray-800 mb-4">Autres Vidéos YouTube</h2>
-
-            <!-- Lien YouTube 1 -->
-            <div class="mb-4">
-                <h3 class="font-semibold text-gray-800">Vidéo YouTube 1: Cours sur CSS</h3>
-                <a href="https://www.youtube.com/watch?v=OewtQ1aS11g" class="text-blue-600 hover:underline" target="_blank">Regarder la vidéo</a>
-            </div>
-
-            <!-- Lien YouTube 2 -->
-            <div class="mb-4">
-                <h3 class="font-semibold text-gray-800">Vidéo YouTube 2: Cours sur JavaScript</h3>
-                <a href="https://www.youtube.com/watch?v=AJQX5wwH7gQ" class="text-blue-600 hover:underline" target="_blank">Regarder la vidéo</a>
-            </div>
-        </div>
+        <?php endif; ?>
 
     </div>
 </body>

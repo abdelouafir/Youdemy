@@ -19,11 +19,11 @@ class CourseManager {
     public function createCourse($type,$title,$description,$videoLink,$photo,$status,$price,$level,$teacherId,$category) {
     
         if ($type === 'video') {
-             $VideoCourse = new VideoCourse($title, $description,$videoLink,$photo, $status,$level,$teacherId,$category);
+             $VideoCourse = new VideoCourse($title, $description,$videoLink,$photo, $status,$level,$teacherId,$category,$type);
              $id_cours = $VideoCourse->add_cours($this->conction);
             return $id_cours;
         } elseif ($type === 'document') {
-            $documont_cours = new DocumentCourse($title, $description, $photo, $status, $price, $level, $teacherId,$videoLink,$category);
+            $documont_cours = new DocumentCourse($title, $description,$videoLink,$photo, $status,$level,$teacherId,$category,$type);
             $documont_cours->add_cours($this->conction);
         } else {
             return "les type de doner no coerct";

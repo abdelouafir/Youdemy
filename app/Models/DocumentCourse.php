@@ -11,18 +11,9 @@ $conction = $conn->getConnection();
 class DocumentCourse extends Course {
     private string $documentPath;
 
-    public function __construct(
-        string $title,
-        string $description,
-        string $photo,
-        string $status,
-        float $price,
-        string $level,
-        int $teacherId,
-        string $documentPath
-    ) {
-        parent::__construct($title, $description, $photo, $status, $price, $level, $teacherId);
-        $this->documentPath = $documentPath;
+    public function __construct( $title, $description,$videoLink, $photo, $status, $level, $teacherId,$category,$type ) {
+        parent::__construct($title, $description,$videoLink,$photo, $status, $level, $teacherId,$category,$type);
+        $this->documentPath = $videoLink;
     }
 
     public function getDocumentPath(): string {
@@ -35,19 +26,22 @@ class DocumentCourse extends Course {
 
     public function add_cours($pdo) {
         try {
+            $sql = "INSERT INTO courses (title, description, content, photo, video_link,teacher_id,category_id,type)
+                    VALUES (:title, :description, :content, :photo, :video_link, :teacher_id,:category_id,:type)";
             
-            $sql = "INSERT INTO courses (title, description, content, photo,teacher_id)
-                    VALUES (:title, :description, :content, :photo, :teacher_id)";
             $stmt = $pdo->prepare($sql);
+    
+
             $stmt->bindParam(':title', $this->title);
             $stmt->bindParam(':description', $this->description);
             $stmt->bindParam(':content', $this->content);
             $stmt->bindParam(':photo', $this->photo);
             $stmt->bindParam(':teacher_id', $this->enseignant);
+            $stmt->bindParam(':category_id', $this->category);
+            $stmt->bindParam(':type',$this->type);
+         
+            $stmt->bindParam(':video_link', $this->documentPath); 
 
-            // $stmt->bindParam(':prix', $this->prix); 
-            $stmt->bindParam(':content', $this->documentPath); 
-    
             // Exécuter la requête
             if ($stmt->execute()) {
                 $lastInsertedId = $pdo->lastInsertId();

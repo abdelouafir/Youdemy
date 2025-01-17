@@ -12,8 +12,8 @@ $conction = $conn->getConnection();
 class VideoCourse extends Course {
     private string $videoLink;
 
-    public function __construct( $title, $description,$videoLink, $photo, $status, $level, $teacherId,$category ) {
-        parent::__construct($title, $description,$videoLink,$photo, $status, $level, $teacherId,$category);
+    public function __construct( $title, $description,$videoLink, $photo, $status, $level, $teacherId,$category,$type ) {
+        parent::__construct($title, $description,$videoLink,$photo, $status, $level, $teacherId,$category,$type);
         $this->videoLink = $videoLink;
     }
 
@@ -26,8 +26,8 @@ class VideoCourse extends Course {
 
     public function add_cours($pdo) {
         try {
-            $sql = "INSERT INTO courses (title, description, content, photo, video_link,teacher_id,category_id)
-                    VALUES (:title, :description, :content, :photo, :video_link, :teacher_id,:category_id)";
+            $sql = "INSERT INTO courses (title, description, content, photo, video_link,teacher_id,category_id,type)
+                    VALUES (:title, :description, :content, :photo, :video_link, :teacher_id,:category_id,:type)";
             
             $stmt = $pdo->prepare($sql);
     
@@ -38,7 +38,7 @@ class VideoCourse extends Course {
             $stmt->bindParam(':photo', $this->photo);
             $stmt->bindParam(':teacher_id', $this->enseignant);
             $stmt->bindParam(':category_id', $this->category);
-
+            $stmt->bindParam(':type',$this->type);
          
             $stmt->bindParam(':video_link', $this->videoLink); 
 
