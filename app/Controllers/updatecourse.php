@@ -1,56 +1,59 @@
-        <?php 
-        // require_once dirname(__FILE__, 4) . '/vendor/autoload.php';
-        require_once "../../../vendor/autoload.php";
-        use app\Config\Database;
-        use app\Models\category;
-        use app\Models\Tags;
-        // use app\Models\Course;
-        use app\Controllers\CourseManager;
+<?php 
+// id de update 
+require_once dirname(__FILE__, 3) . '/vendor/autoload.php';
 
-        $conn = new Database();
-        $get_tags = new Tags();
-        $get_category = new category();
-        $conction = $conn->getConnection();
-        $categorys = $get_category->get_categories($conction);
-
-        $tags = $get_tags->get_tags($conction);
-
-        $creat_cours = new CourseManager($conction);
-
-        session_start();
-        
-        $data = $_SESSION['user'] ;
-        if($data){
-            echo "hello user";
-        }
-
-        var_dump($data['id']);
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $type = $_POST['type']; 
-            $title = $_POST['title'];
-            $description = $_POST['description'];
-            $content = ($type === 'video') ? $_POST['video-url'] : $_POST['document'];
-            $tags_insert = $_POST['tags'] ?? [];  
-            $duration = $_POST['duration'];
-            $category = $_POST['category'];
-            $price = (float)$_POST['price'];
-            $image_url = $_POST['image-url'];
-            $teacherId = $data['id'];
-            $status = 1; 
-            $level = $_POST['level']; 
-            // $teacherId = $_POST['teacherId'];
-            $extraContent = ($type === 'document') ? $_POST['document'] : '';
-            $id_cours =  $creat_cours->createCourse($type, $title, $description,$content,$image_url, $status, $price, $level, $teacherId,$category);
-            if ($id_cours) {
-                $get_tags->insert_tag($conction, $id_cours, $tags_insert);
-            } else {
-                echo "Erreur lors de l'ajout de l'article.";
-            }
-        }
-        ?>
+use app\Config\Database;
+use app\Models\Enrollment;
+use app\Models\Tags;
+use app\Models\category;
+use app\Controllers\CourseManager;
+$id = '';
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+}
 
 
+$conn = new Database();
+$course = new Enrollment();
+$get_tags = new Tags();
+$get_category = new category();
+$conction = $conn->getConnection();
+$categorys = $get_category->get_categories($conction);
+
+$tags = $get_tags->get_tags($conction);
+$conction = $conn->getConnection();
+$course_mangement = new CourseManager($conction);
+$update_cours = $course->get_cours($conction,$id);
+
+
+echo $id;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['id']) && !empty($_POST['id'])) {
+        $id = $_POST['id'];
+    } else {
+        exit; 
+    }
+    $type = $_POST['type']; 
+    $title = $_POST['title'];
+    echo $title;
+    $description = $_POST['description'];
+    $content = ($type === 'video') ? $_POST['video-url'] : $_POST['document'];
+    $tags_insert = $_POST['tags'] ?? [];  
+    $duration = $_POST['duration'];
+    $category = $_POST['category'];
+    $price = (float)$_POST['price'];
+    $image_url = $_POST['image-url'];
+    // $teacherId = $data['id'];
+    $status = 1; 
+    $level = $_POST['level']; 
+    // $teacherId = $_POST['teacherId'];
+    $extraContent = ($type === 'document') ? $_POST['document'] : '';
+    var_dump($type);
+    $id_cours =  $course_mangement->update_cours($type,$id,$title,$description,$content,$image_url,$status,$price,$level,$category);
+    
+}
+
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -91,14 +94,14 @@
         </div>
 
         <!-- Form -->
-        <form action="./create.php" method="POST" class="bg-white rounded-lg shadow-md overflow-hidden">
+        <form action="./updatecourse.php" method="POST" class="bg-white rounded-lg shadow-md overflow-hidden">
             <!-- General Information -->
             <div class="p-6 border-b">
                 <h2 class="text-xl font-bold text-gray-800 mb-4">Informations générales</h2>
                 <div class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Titre du cours</label>
-                        <input type="text" name="title" class="w-full px-4 py-2 border rounded-lg" placeholder="Titre">
+                        <input type="text" name="title" class="w-full px-4 py-2 border rounded-lg" placeholder="Titre" value="<?php echo $update_cours['title'] ?>">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
@@ -110,7 +113,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Description courte</label>
-                        <input type="text" name="description" class="w-full px-4 py-2 border rounded-lg" placeholder="Description courte">
+                        <input type="text" name="description" class="w-full px-4 py-2 border rounded-lg" placeholder="Description courte" value="<?php echo $update_cours['description'] ?>">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
@@ -147,11 +150,11 @@
                 <h2 class="text-xl font-bold text-gray-800 mb-4">Contenu</h2>
                 <div id="video-input" style="display: block;">
                     <label class="block text-sm font-medium text-gray-700 mb-1">URL de la vidéo</label>
-                    <input type="url" name="video-url" class="w-full px-4 py-2 border rounded-lg" placeholder="https://exemple.com/video.mp4">
+                    <input type="text" name="video-url" class="w-full px-4 py-2 border rounded-lg" placeholder="https://exemple.com/video.mp4" value="<?php echo $update_cours['content'] ?>">
                 </div>
-                <div id="document-textarea" style="display: none;">
+                <div id="document-textargit ea" style="display: none;">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Description complète du document</label>
-                    <textarea name="document" rows="4" class="w-full px-4 py-2 border rounded-lg" placeholder="Description complète"></textarea>
+                    <textarea name="document" rows="4" class="w-full px-4 py-2 border rounded-lg" placeholder="Description complète">value="<?php echo $update_cours['content'] ?></textarea>
                 </div>
             </div>
 
@@ -172,13 +175,13 @@
             <!-- Image URL -->
             <div class="p-6 border-b">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
-                <input type="url" name="image-url" class="w-full px-4 py-2 border rounded-lg" placeholder="https://exemple.com/image.jpg">
+                <input type="url" name="image-url" class="w-full px-4 py-2 border rounded-lg" placeholder="https://exemple.com/image.jpg" value="<?php echo $update_cours['photo'] ?>">
             </div>
-
+            <input type="hidden" name="id" value="<?php echo $id; ?>">
             <!-- Submit Button -->
             <div class="p-6 bg-gray-50 flex justify-end space-x-3">
                 <button type="reset" class="px-4 py-2 border rounded-lg text-gray-700 hover:bg-gray-100">Annuler</button>
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Créer le cours</button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">update le cours</button>
             </div>
         </form>
     </div>

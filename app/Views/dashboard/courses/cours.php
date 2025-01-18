@@ -10,8 +10,7 @@ $cours_id = $_GET['cours_id'] ?? null;
 if($cours_id != null){
     $cours = $select->get_cours($conction,$cours_id);
 }
-echo $cours_id;
-var_dump($cours['id'])
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
