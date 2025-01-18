@@ -20,11 +20,8 @@
         session_start();
         
         $data = $_SESSION['user'] ;
-        if($data){
-            echo "hello user";
-        }
-
-        var_dump($data['id']);
+  
+       
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $type = $_POST['type']; 

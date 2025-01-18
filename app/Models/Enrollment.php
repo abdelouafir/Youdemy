@@ -110,25 +110,7 @@ class Enrollment extends user {
         print_r($valur);
         return $valur;
     }
-    // public function update_courses($pdo, $id, $title, $description,$content,$category_id,$image_url) {
-    //     $sql = "UPDATE courses 
-    //             SET title = :title,description = :description, content = :content, category_id = :category_id ,photo = :image_url
-    //             WHERE id = :id";
-    //      $stmt = $pdo->prepare($sql);
-    //      $stmt->bindParam(':title', $title);
-    //      $stmt->bindParam(':description',$description);
-    //      $stmt->bindParam(':content', $content);
-    //      $stmt->bindParam(':image_url', $image_url);
-    //      $stmt->bindParam(':category_id', $category_id);
-    //      $stmt->bindParam(':id',$id);
-    //     if ($stmt->execute()) {
-    //         return true; 
-    //     } else {
-    //         echo "Une erreur est survenue lors de la mise à jour de l'article.";
-    //         return false; 
-    //     }
-    // }
-    
+
 }
 
 ?>
