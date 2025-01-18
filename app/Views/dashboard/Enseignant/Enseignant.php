@@ -1,3 +1,29 @@
+<?php 
+        require_once "../../../../vendor/autoload.php";
+        use app\Config\Database;
+        use app\Models\Enrollment;
+
+       // use app\Models\Course;
+        $conn = new Database();
+        $emrollement = new Enrollment();
+        
+        $conction = $conn->getConnection();
+       
+        session_start();
+        $data = $_SESSION['user'] ;
+        if($data){
+            $id = $data['id'];
+            $my_cours = $emrollement->get_all_mycours($conction,$id);
+        }
+       
+        $cours_id = $_GET['delet_id'] ?? null;
+       
+        // var_dump ($courses);
+        if($cours_id){
+            $emrollement->delete_cours($conction,$cours_id);
+            header("location: ./Enseignant.php");
+        }
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -68,71 +94,42 @@
     </div>
 
     <!-- Grid des cours -->
+     
     <div id="coursesGrid" class="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    <!-- Course 1 -->
+     <?php foreach($my_cours as $course) { ?>
     <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-    <!-- Section image -->
-    <div class="relative h-48">
-        <img 
-            src="/api/placeholder/400/320" 
-            alt="Titre du cours" 
-            class="w-full h-full object-cover"
-        >
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-        <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
-            <h2 class="text-xl font-bold">Titre du cours</h2>
-            <p class="text-sm opacity-90">Enseignant : M. Dupont</p>
-        </div>
-    </div>
-
-    <!-- Contenu -->
-    <div class="p-4">
-        <span class="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-md">
-            Niveau : Terminal
-        </span>
-        
-        <p class="mt-3 text-sm text-gray-600">
-            Description du cours : Ce cours couvre les concepts avancés d'analyse mathématique.
-        </p>
-
-        <div class="mt-4 grid grid-cols-2 gap-3">
-            <div class="flex items-center gap-2 text-gray-600">
-                <i class="far fa-calendar text-sm"></i>
-                <span class="text-sm">Lundi</span>
-            </div>
-            <div class="flex items-center gap-2 text-gray-600">
-                <i class="far fa-clock text-sm"></i>
-                <span class="text-sm">8h00 - 10h00</span>
-            </div>
-            <div class="flex items-center gap-2 text-gray-600">
-                <i class="fas fa-users text-sm"></i>
-                <span class="text-sm">25 étudiants</span>
-            </div>
-            <div class="flex items-center gap-2 text-gray-600">
-                <i class="fas fa-map-marker-alt text-sm"></i>
-                <span class="text-sm">Salle A101</span>
+        <div class="relative h-48">
+            <img src="/api/placeholder/400/320" alt="Mathématiques avancées" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
+                <h2 class="text-xl font-bold"><?php echo $course['title'] ?></h2>
+                <p class="text-sm opacity-90">Enseignant <?php echo $course['username'] ?></p>
             </div>
         </div>
+        <div class="p-4">
+            <span class="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-md">Niveau : Terminal</span>
+            <p class="mt-3 text-sm text-gray-600"><?php echo $course['content']?></p>
+            <div class="mt-4 grid grid-cols-2 gap-3">
+                <div class="flex items-center gap-2 text-gray-600"><i class="far fa-calendar text-sm"></i><span>Lundi</span></div>
+                <div class="flex items-center gap-2 text-gray-600"><i class="fas fa-users text-sm"></i><span>25 étudiants</span></div>
 
-        <div class="mt-6 flex justify-between items-center">
-            <!-- Lire plus -->
-            <a href="#read-more" class="text-blue-500 hover:text-blue-600 transition-colors" title="Lire plus">
-                <i class="fas fa-book-open text-lg"></i>
-            </a>
-            <div class="flex items-center gap-4">
-                <!-- Modifier -->
-                <a href="#edit" class="text-yellow-400 hover:text-yellow-500 transition-colors" title="Modifier">
-                    <i class="fas fa-edit text-lg"></i>
-                </a>
-                <!-- Supprimer -->
-                <a href="#delete" class="text-red-500 hover:text-red-600 transition-colors" title="Supprimer">
-                    <i class="fas fa-trash-alt text-lg"></i>
-                </a>
+            </div>
+            <div class="mt-6 flex justify-between items-center">
+                <a href="../courses/cours.php?cours_id=<?php echo $course['id']?>" class="text-blue-500 hover:text-blue-600 transition-colors" title="Lire plus"><i class="fas fa-book-open text-lg"></i></a>
+                <div class="flex items-center gap-4">
+                    <a href="/app/Controllers/updatecourse.php?id=<?php echo $course['id'] ?>" class="text-yellow-400 hover:text-yellow-500 transition-colors" title="Modifier"><i class="fas fa-edit text-lg"></i></a>
+                    <a href="./Enseignant.php?delet_id=<?php echo $course['id']?>" class="text-red-500 hover:text-red-600 transition-colors" title="Supprimer"><i class="fas fa-trash-alt text-lg"></i></a>
+                </div>
             </div>
         </div>
     </div>
+    <?php  } ?>
+
+
+
 </div>
 
-    </div>
 
 
 </body>

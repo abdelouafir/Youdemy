@@ -54,6 +54,31 @@ class VideoCourse extends Course {
             return null;
         }
     }
+
+    public function updateCurse($pdo, $id) {
+        try {
+            $sql = "UPDATE courses 
+                    SET type = :type ,title = :title, description = :description, content = :content, category_id = :category_id, photo = :image_url
+                    WHERE id = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':title', $this->title);
+            $stmt->bindParam(':description', $this->description);
+            $stmt->bindParam(':content', $this->content);
+            $stmt->bindParam(':image_url', $this->photo);
+            $stmt->bindParam(':category_id', $this->category);
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':type',$this->type);
+            if ($stmt->execute()) {
+                return true; 
+            } else {
+                return false;  
+            }
+        } catch (PDOException $e) {
+            echo "Une erreur est survenue lors de la mise à jour de l'article : " . $e->getMessage();
+            return false;
+        }
+    }
+    
     
 }                  
 

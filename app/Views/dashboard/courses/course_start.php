@@ -10,7 +10,7 @@ $select = new Enrollment();
 $cours_id = $_GET['cours_id'] ?? null;
 
 $cours = $select->get_cours($conction,$cours_id);
-var_dump($cours['type']);
+var_dump($cours);
 
 ?>
 <!DOCTYPE html>
@@ -41,7 +41,7 @@ var_dump($cours['type']);
                     <div class="aspect-w-16 aspect-h-9">
                         <iframe 
                             class="w-full h-full" 
-                            src="<?= $cours['video_link'] ?>" 
+                            src="<?= $cours['content'] ?>" 
                             frameborder="0" 
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
                             allowfullscreen>
@@ -94,38 +94,4 @@ var_dump($cours['type']);
     </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

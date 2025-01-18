@@ -13,7 +13,7 @@ if($data){
     echo "hello user";
 }
 
-var_dump($data);
+
 
 ?>
 <!DOCTYPE html>
