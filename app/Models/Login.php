@@ -16,7 +16,7 @@ class Login {
                 echo "corcted";
                 session_start();
                 $_SESSION['user'] =  $user;
-                header("location: ../dashboard/admin/admin.php");
+                header("location: ../auth/gestion_role.php");
             } else {
                 echo "no corected";
                 echo $user['password'];

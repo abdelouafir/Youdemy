@@ -10,13 +10,13 @@ class User {
 
 
 
-    public function register($pdo) {
-        $passwordHash = password_hash($this->password, PASSWORD_DEFAULT);
+    public function register($pdo,$password,$user_name,$email) {
+        $passwordHash = password_hash($password,PASSWORD_DEFAULT);
         $sql = "INSERT INTO users (username, email, password) 
                 VALUES (:username, :email, :password_hash)";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':username', $this->user_name);
-        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':username', $user_name);
+        $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password_hash', $passwordHash);
     
         if ($stmt->execute()) {
@@ -51,8 +51,8 @@ class User {
         FROM courses
         JOIN users ON users.id = courses.teacher_id
         JOIN Enrollment ON Enrollment.course_id = courses.id
-        JOIN categories ON categories.id = courses.category_id;
-        WHERE Enrollment.student_id  = $id
+        JOIN categories ON categories.id = courses.category_id
+        WHERE Enrollment.student_id  = $id;
         ";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();

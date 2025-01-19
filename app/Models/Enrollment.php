@@ -78,6 +78,29 @@ class Enrollment extends user {
         return $stmt->fetchAll(PDO::FETCH_ASSOC); 
     }
 
+
+    public function get_all_courses_activer($pdo) {
+        $sql = "SELECT 
+           courses.id,
+           courses.title,
+           courses.content,
+           courses.description,
+           courses.photo,
+           courses.prix,
+           courses.status,
+           courses.video_link,
+           users.username,
+           users.email,
+           categories.name AS category_name
+        FROM courses
+        JOIN users ON users.id = courses.teacher_id
+        JOIN categories ON categories.id = courses.category_id
+        WHERE courses.status = 'active';
+        ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    }
     public function delete_cours($connection, $id) {
         $sql = "DELETE FROM courses WHERE id = :id";
         $stmt = $connection->prepare($sql);

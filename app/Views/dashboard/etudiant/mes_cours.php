@@ -13,10 +13,9 @@ session_start();
 $data = $_SESSION['user'] ;
 $id_cours = '';
 $student_id = $data['id'];
+var_dump($student_id);
 $courses = $selct->get_mes_cours($conction,$student_id);
-
 $cours_id = $_GET['cours_id'] ?? null;
-
 
 ?>
 
@@ -33,41 +32,47 @@ $cours_id = $_GET['cours_id'] ?? null;
 <body class="bg-gray-50">
     <!-- Navigation -->
     <nav class="bg-white shadow-md fixed w-full z-10">
-        <div class="px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <button id="toggleSidebar" class="text-gray-600 hover:text-gray-800">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-                <span class="text-xl font-bold text-blue-600">EduPortal</span>
+    <div class="px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            <button id="toggleSidebar" class="text-gray-600 hover:text-gray-800">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <span class="text-xl font-bold text-blue-600">EduPortal</span>
+        </div>
+        
+        <div class="flex items-center gap-6">
+            <div class="hidden md:flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
+                <i class="fas fa-search text-gray-500"></i>
+                <input type="text" placeholder="Rechercher un cours..." class="bg-transparent outline-none w-48">
             </div>
             
-            <div class="flex items-center gap-6">
-                <div class="hidden md:flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
-                    <i class="fas fa-search text-gray-500"></i>
-                    <input type="text" placeholder="Rechercher un cours..." class="bg-transparent outline-none w-48">
-                </div>
-                
-                <button class="relative">
-                    <i class="fas fa-bell text-gray-600 text-xl"></i>
-                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                        2
-                    </span>
-                </button>
-                
-                <img src="/api/placeholder/40/40" alt="Profile" class="w-10 h-10 rounded-full">
-                
-                <a href="./logout.php" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Déconnexion</span>
-                </a>
-            </div>
+            <button class="relative">
+                <i class="fas fa-bell text-gray-600 text-xl"></i>
+                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    2
+                </span>
+            </button>
+            
+            <img src="/api/placeholder/40/40" alt="Profile" class="w-10 h-10 rounded-full">
+            
+       
+            <a href="./student.php" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                <i class="fas fa-book"></i>
+                <span>Afficher tous les cours</span>
+            </a>
+
+            <a href="../../auth/logout.php" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Déconnexion</span>
+            </a>
         </div>
-    </nav>
-    
+    </div>
+</nav>
+
     <!-- Dashboard Header -->
     <div class="bg-white border-b">
         <div class="container mx-auto px-6 py-8">
-            <h1 class="text-3xl font-bold text-gray-800">Bonjour, <?php echo $data['username'] ?></h1>
+            <h1 class="text-3xl font-bold text-gray-800 mt-14">Bonjour, <?php echo $data['username'] ?></h1>
             <p class="text-gray-600 mt-2">Continuez votre apprentissage là où vous vous êtes arrêté</p>
         </div>
     </div>

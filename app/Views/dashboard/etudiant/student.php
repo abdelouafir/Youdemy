@@ -7,13 +7,12 @@ use app\Models\User;
 $conn = new Database();
 $conction = $conn->getConnection();
 $selct = new Enrollment();
-$courses = $selct->get_all_courses($conction);
+$courses = $selct->get_all_courses_activer($conction);
 session_start();
         
 $data = $_SESSION['user'] ;
 $id_cours = '';
 $student_id = $data['id'];
-
 
 $user = new User();
 
@@ -64,7 +63,7 @@ if (isset($_GET['cours_id'])) {
             
             <img src="/api/placeholder/40/40" alt="Profile" class="w-10 h-10 rounded-full">
             
-            <a href="./logout.php" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+            <a href="../../auth/logout.php" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Déconnexion</span>
             </a>
@@ -76,7 +75,7 @@ if (isset($_GET['cours_id'])) {
     <!-- Dashboard Header -->
     <div class="bg-white border-b">
         <div class="container mx-auto px-6 py-8">
-            <h1 class="text-3xl font-bold text-gray-800">Bonjour, <?php echo $data['username'] ?></h1>
+            <h1 class="text-3xl font-bold text-gray-800 mt-12">Bonjour, <?php echo $data['username'] ?></h1>
             <p class="text-gray-600 mt-2">Continuez votre apprentissage là où vous vous êtes arrêté</p>
         </div>
     </div>
