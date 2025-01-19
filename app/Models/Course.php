@@ -17,7 +17,7 @@ abstract class Course {
     // protected string $teacher_id;
 
     
-    public function __construct($title,$descreption,$countent,$photo,$status,$niveau,$enseignant,$category,$type)
+    public function __construct($title,$descreption,$countent,$photo,$status,$niveau,$enseignant,$category,$type,$prix)
     {
         $this->title = $title;
         $this->enseignant = $enseignant;
@@ -25,7 +25,7 @@ abstract class Course {
         $this->content = $countent;
         $this->photo = $photo;
         $this->status = $status;
-        // $this->prix = $prix;
+        $this->prix = $prix;
         $this->niveau = $niveau;
         $this->category = $category;
         $this->type = $type;

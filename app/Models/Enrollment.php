@@ -41,6 +41,7 @@ class Enrollment extends user {
             courses.prix,
             courses.status,
             courses.video_link,
+            courses.Niveau,
             courses.type,
             users.username,
             users.email,

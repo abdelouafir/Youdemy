@@ -48,11 +48,11 @@ if($cours_id != null){
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg text-center">
                         <h4 class="font-medium text-gray-800 mb-1">Niveau</h4>
-                        <p class="text-gray-600">Débutant</p>
+                        <p class="text-gray-600"><?=$cours['Niveau']?></p>
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg text-center">
-                        <h4 class="font-medium text-gray-800 mb-1">Langue</h4>
-                        <p class="text-gray-600">Français</p>
+                        <h4 class="font-medium text-gray-800 mb-1">category</h4>
+                        <p class="text-gray-600"><?= $cours['category_name']?></p>
                     </div>
                 </div>
 

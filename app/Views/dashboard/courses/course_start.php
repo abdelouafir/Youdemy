@@ -3,14 +3,23 @@
 require_once dirname(__FILE__, 5) . '/vendor/autoload.php';
 use app\Config\Database;
 use app\Models\Enrollment;
+use app\Models\Tags;
 
 $conn = new Database();
 $conction = $conn->getConnection();
 $select = new Enrollment();
 $cours_id = $_GET['cours_id'] ?? null;
-
 $cours = $select->get_cours($conction,$cours_id);
-
+$get_tags = new Tags();
+$tags = $get_tags->course_tags($conction,$cours_id);
+if (!empty($tags)) {
+    foreach ($tags as $tag) {
+        echo 'Course ID: ' . $tag['course_id'] . '<br>';
+        echo 'Tag ID: ' . $tag['tag_id'] . '<br>';
+    }
+} else {
+    echo 'No tags available.';
+}
 
 ?>
 <!DOCTYPE html>
@@ -90,8 +99,21 @@ $cours = $select->get_cours($conction,$cours_id);
             <?php endforeach; ?>
         </div>
         <?php endif; ?>
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="font-bold text-gray-800 mb-4">Tags Associés</h2>
+        <?php foreach ($tags as $tag): ?>
+            <span class="px-3 py-1 bg-gray-200 text-gray-800 rounded-full text-sm">
+                <?php echo $get_tags->get_tag($conction, $tag['tag_id'])?>
+            </span>
+        <?php endforeach; ?>
+    </div>
 
     </div>
+    <!-- Section des Tags -->
+
+
+
+
 </body>
 </html>
 
