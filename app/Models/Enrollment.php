@@ -133,6 +133,17 @@ class Enrollment extends user {
         print_r($valur);
         return $valur;
     }
+    public function search_courses($connection, $searchTerm)
+{
+    $query = "SELECT * FROM courses 
+    WHERE (title LIKE :search OR description LIKE :search) AND courses.status = 'active';";
+    $stmt = $connection->prepare($query);
+    $searchTerm = '%' . $searchTerm . '%';
+    $stmt->bindParam(':search', $searchTerm);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
 }
 

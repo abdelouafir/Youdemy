@@ -20,6 +20,16 @@ if (isset($_GET['cours_id'])) {
     $id_cours = $_GET['cours_id'];
     $user->Enrollment($conction,$id_cours,$student_id);
 }
+
+$searchTerm = '';
+$courses = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
+    $searchTerm = $_POST['search'];
+    $courses = $selct->search_courses($conction, $searchTerm);
+} else {
+    $courses = $selct->get_all_courses_activer($conction);
+}
 ?>
 
 <!DOCTYPE html>
@@ -44,10 +54,20 @@ if (isset($_GET['cours_id'])) {
         </div>
         
         <div class="flex items-center gap-6">
-            <div class="hidden md:flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
+        <div class="hidden md:flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
+            <form method="POST" action="./student.php" class="flex items-center w-full">
                 <i class="fas fa-search text-gray-500"></i>
-                <input type="text" placeholder="Rechercher un cours..." class="bg-transparent outline-none w-48">
-            </div>
+                <input 
+                    type="text" 
+                    name="search" 
+                    placeholder="Rechercher un cours..." 
+                    value="<?php echo isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''; ?>" 
+                    class="bg-transparent outline-none w-48"
+                >
+                <button type="submit" class="hidden"></button>
+            </form>
+        </div>
+
             
             <a href="./mes_cours.php" class="text-gray-600 hover:text-gray-800 flex items-center gap-2">
                 <i class="fas fa-book text-xl"></i>
