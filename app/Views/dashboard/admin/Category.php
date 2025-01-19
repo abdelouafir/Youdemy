@@ -1,6 +1,17 @@
 
 <?php 
 require_once dirname(__FILE__, 5) . '/vendor/autoload.php';
+
+session_start();
+        
+$data = $_SESSION['user'] ;
+if($data){
+    if($data['role'] != 'admin'){
+        header('location: ../../auth/login.php');
+    }
+
+}
+
 use app\Config\Database;
 use app\Models\category;
 $conn = new Database();
@@ -18,6 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['category_id'])) {
     $delete = category::delete_category($conction,$id);
       header("location: ./Category.php");
 }
+
+
+
 
 ?>
 

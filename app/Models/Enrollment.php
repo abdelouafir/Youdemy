@@ -78,6 +78,29 @@ class Enrollment extends user {
         return $stmt->fetchAll(PDO::FETCH_ASSOC); 
     }
 
+
+    public function get_all_courses_activer($pdo) {
+        $sql = "SELECT 
+           courses.id,
+           courses.title,
+           courses.content,
+           courses.description,
+           courses.photo,
+           courses.prix,
+           courses.status,
+           courses.video_link,
+           users.username,
+           users.email,
+           categories.name AS category_name
+        FROM courses
+        JOIN users ON users.id = courses.teacher_id
+        JOIN categories ON categories.id = courses.category_id
+        WHERE courses.status = 'active';
+        ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    }
     public function delete_cours($connection, $id) {
         $sql = "DELETE FROM courses WHERE id = :id";
         $stmt = $connection->prepare($sql);
@@ -110,25 +133,18 @@ class Enrollment extends user {
         print_r($valur);
         return $valur;
     }
-    // public function update_courses($pdo, $id, $title, $description,$content,$category_id,$image_url) {
-    //     $sql = "UPDATE courses 
-    //             SET title = :title,description = :description, content = :content, category_id = :category_id ,photo = :image_url
-    //             WHERE id = :id";
-    //      $stmt = $pdo->prepare($sql);
-    //      $stmt->bindParam(':title', $title);
-    //      $stmt->bindParam(':description',$description);
-    //      $stmt->bindParam(':content', $content);
-    //      $stmt->bindParam(':image_url', $image_url);
-    //      $stmt->bindParam(':category_id', $category_id);
-    //      $stmt->bindParam(':id',$id);
-    //     if ($stmt->execute()) {
-    //         return true; 
-    //     } else {
-    //         echo "Une erreur est survenue lors de la mise à jour de l'article.";
-    //         return false; 
-    //     }
-    // }
-    
+    public function search_courses($connection, $searchTerm)
+{
+    $query = "SELECT * FROM courses 
+    WHERE (title LIKE :search OR description LIKE :search) AND courses.status = 'active';";
+    $stmt = $connection->prepare($query);
+    $searchTerm = '%' . $searchTerm . '%';
+    $stmt->bindParam(':search', $searchTerm);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
 }
 
 ?>

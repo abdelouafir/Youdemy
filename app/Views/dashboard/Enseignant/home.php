@@ -1,3 +1,14 @@
+<?php 
+session_start();
+$data = $_SESSION['user'] ;
+
+if($data){
+    if($data['role'] == 'student'){
+        header('location: ../../auth/login.php');
+    }
+
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -34,7 +45,7 @@
                 <img src="/api/placeholder/40/40" alt="Profile" class="w-10 h-10 rounded-full">
                 
                 <!-- Nouveau bouton de déconnexion -->
-                <a href="./logout.php" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                <a href="../../auth/logout.php" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Déconnexion</span>
                 </a>
@@ -73,7 +84,7 @@
             <!-- En-tête avec bouton d'ajout -->
             <div class="flex justify-between items-center mb-6">
                 <h1 class="text-2xl font-bold text-gray-800">
-                    Bienvenue, Professeur Martin
+                    Bienvenue, Professeur <?php echo $data['username'] ?>
                 </h1>
                 <a href="../../courses/create.php" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
                     <i class="fas fa-plus"></i>

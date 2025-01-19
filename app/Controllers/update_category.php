@@ -1,7 +1,7 @@
 <?php 
 require_once dirname(__FILE__, 3) . '/vendor/autoload.php';
 use app\Config\Database;
-use app\Controllers\category;
+use app\Models\category;
 
 $conn = new Database();
 $conction = $conn->getConnection();

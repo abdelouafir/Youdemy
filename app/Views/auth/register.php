@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     // $user = new user;
     // var_dump($role) ;
     $Enrollment = new Enrollment($username,$email,$password,$role);
-    $Enrollment->register($conction);
+    $Enrollment->register($conction,$password,$username,$email);
 
 }
 ?>

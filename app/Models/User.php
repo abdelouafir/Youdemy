@@ -8,22 +8,15 @@ class User {
     protected $password;
     protected $role;
 
-    // Constructeur
-    // public function __construct($user_name, $email, $password, $role)
-    // {
-    //     $this->user_name = $user_name;
-    //     $this->email = $email;
-    //     $this->password = $password;
-    //     $this->role = $role;
-    // }
 
-    public function register($pdo) {
-        $passwordHash = password_hash($this->password, PASSWORD_DEFAULT);
+
+    public function register($pdo,$password,$user_name,$email) {
+        $passwordHash = password_hash($password,PASSWORD_DEFAULT);
         $sql = "INSERT INTO users (username, email, password) 
                 VALUES (:username, :email, :password_hash)";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':username', $this->user_name);
-        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':username', $user_name);
+        $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password_hash', $passwordHash);
     
         if ($stmt->execute()) {
@@ -33,47 +26,38 @@ class User {
         }
     }
 
-    // public function login($pdo, $email, $password) {
-    //     $sql = "SELECT * FROM USERS WHERE email = :email";
-    //     $stmt = $pdo->prepare($sql);
-    //     $stmt->bindParam(':email', $email);
-    //     $stmt->execute();
-    //     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
-    //     if ($user) {
-    //         if (password_verify($password, $user['password_hash'])) {
-    //             echo "corcted";
-    //             session_start();
-    //             $_SESSION['user'] =  $user;
-    //         } else {
-    //             echo "no corected";
-    //             echo $user['password_hash'];
-    //         }
-    //     } else {
-    //         return [
-    //             'status' => false,
-    //             'message' => 'User not found'
-    //         ];
-    //     }
-    // }
-
-
-    // Getters
-    public function get_name() {
-        return $this->user_name;
+    public function Enrollment($pdo, $id_cours, $id_etudent) {
+        $sql = "INSERT INTO enrollment (student_id, course_id) VALUES (:id_etudent, :id_cours)";
+        $stmt = $pdo->prepare($sql);
+    
+        $stmt->bindParam(':id_etudent', $id_etudent);
+        $stmt->bindParam(':id_cours', $id_cours);
+        $stmt->execute();
     }
 
-    public function get_email() {
-        return $this->email;
+    public function get_mes_cours($pdo,$id){
+        $sql = "SELECT 
+            courses.id,
+            courses.title,
+            courses.content,
+            courses.description,
+            courses.photo,
+            courses.prix,
+            courses.status,
+            courses.video_link,
+            users.username,
+            users.email,
+            categories.name AS category_name
+        FROM courses
+        JOIN users ON users.id = courses.teacher_id
+        JOIN Enrollment ON Enrollment.course_id = courses.id
+        JOIN categories ON categories.id = courses.category_id
+        WHERE Enrollment.student_id  = $id;
+        ";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); 
     }
-
-    public function get_password() {
-        return $this->password;
-    }
-
-    public function get_role() {
-        return $this->role;
-    }
+    
 }
 ?>

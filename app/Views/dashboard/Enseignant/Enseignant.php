@@ -3,6 +3,15 @@
         use app\Config\Database;
         use app\Models\Enrollment;
 
+        session_start();
+        
+        $data = $_SESSION['user'] ;
+        if($data){
+            if($data['role'] == 'student'){
+                header('location: ../../auth/login.php');
+            }
+        
+        }
        // use app\Models\Course;
         $conn = new Database();
         $emrollement = new Enrollment();
