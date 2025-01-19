@@ -45,13 +45,13 @@ public function get_tags($pdo) {
   return $stmt->fetchAll(PDO::FETCH_ASSOC); 
 }
 
-public static function get_tag($pdo, $id) {
-  $stmt = $pdo->prepare("SELECT * FROM tags WHERE id = :id");
+public static function course_tags($pdo, $id) {
+  $stmt = $pdo->prepare("SELECT * FROM course_tags WHERE course_id = :id");
 
-  $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
+  $stmt->bindParam(':id', $id); 
   $stmt->execute(); 
 
-  return $stmt->fetch(PDO::FETCH_ASSOC);
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 public function totale_tags($pdo){
@@ -75,6 +75,24 @@ public function totale_tags($pdo){
  }
  return true;
 }
+public function get_tag($pdo, $id) {
+
+  $sql = "SELECT name FROM tags WHERE id = :id";
+  $stmt = $pdo->prepare($sql);
+
+  $stmt->bindParam(':id', $id);
+
+  $stmt->execute();
+
+
+  $tag = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  if ($tag) {
+      return $tag['name']; 
+  }
+  return null;
+}
+
 }
 
 ?>

@@ -31,7 +31,7 @@
             $tags_insert = $_POST['tags'] ?? [];  
             $duration = $_POST['duration'];
             $category = $_POST['category'];
-            $price = (float)$_POST['price'];
+            $price = $_POST['price'];
             $image_url = $_POST['image-url'];
             $teacherId = $data['id'];
             $status = 1; 

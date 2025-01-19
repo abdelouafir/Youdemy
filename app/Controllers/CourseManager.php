@@ -16,24 +16,25 @@ class CourseManager {
     {
         $this->conction = $conction;
     }
-    public function createCourse($type,$title,$description,$videoLink,$photo,$status,$price,$level,$teacherId,$category) {
+    public function createCourse($type,$title,$description,$videoLink,$photo,$status,$prix,$level,$teacherId,$category) {
     
         if ($type === 'video') {
-             $VideoCourse = new VideoCourse($title, $description,$videoLink,$photo, $status,$level,$teacherId,$category,$type);
+             $VideoCourse = new VideoCourse($title, $description,$videoLink,$photo, $status,$level,$teacherId,$category,$type,$prix);
              $id_cours = $VideoCourse->add_cours($this->conction);
             return $id_cours;
         } elseif ($type === 'document') {
             $documont_cours = new DocumentCourse($title, $description,$videoLink,$photo, $status,$level,$teacherId,$category,$type);
-            $documont_cours->add_cours($this->conction);
+            $id_cours = $documont_cours->add_cours($this->conction);
+            return $id_cours;
         } else {
             return "les type de doner no coerct";
         }
     }
 
-    public function update_cours($type,$id,$title,$description,$videoLink,$photo,$status,$price,$level,$category) {
+    public function update_cours($type,$id,$title,$description,$videoLink,$photo,$status,$price,$level,$category,$prix) {
     
         if ($type === 'video') {
-             $VideoCourse = new VideoCourse($title, $description,$videoLink,$photo, $status,$price,$level,$category,$type);
+             $VideoCourse = new VideoCourse($title, $description,$videoLink,$photo, $status,$price,$level,$category,$type,$prix);
              $id_cours = $VideoCourse->updateCurse($this->conction,$id);
             return $id_cours;
         } elseif ($type === 'document') {
