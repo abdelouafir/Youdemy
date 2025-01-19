@@ -12,14 +12,7 @@ $cours_id = $_GET['cours_id'] ?? null;
 $cours = $select->get_cours($conction,$cours_id);
 $get_tags = new Tags();
 $tags = $get_tags->course_tags($conction,$cours_id);
-if (!empty($tags)) {
-    foreach ($tags as $tag) {
-        echo 'Course ID: ' . $tag['course_id'] . '<br>';
-        echo 'Tag ID: ' . $tag['tag_id'] . '<br>';
-    }
-} else {
-    echo 'No tags available.';
-}
+
 
 ?>
 <!DOCTYPE html>

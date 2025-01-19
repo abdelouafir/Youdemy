@@ -26,7 +26,7 @@ $course_mangement = new CourseManager($conction);
 $update_cours = $course->get_cours($conction,$id);
 
 
-echo $id;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['id']) && !empty($_POST['id'])) {
         $id = $_POST['id'];
@@ -42,15 +42,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $duration = $_POST['duration'];
     $category = $_POST['category'];
     $price = (float)$_POST['price'];
+    $prix =(float) $_POST['price'];
+
     $image_url = $_POST['image-url'];
     // $teacherId = $data['id'];
     $status = 1; 
     $level = $_POST['level']; 
     // $teacherId = $_POST['teacherId'];
     $extraContent = ($type === 'document') ? $_POST['document'] : '';
-    var_dump($type);
-    $id_cours =  $course_mangement->update_cours($type,$id,$title,$description,$content,$image_url,$status,$price,$level,$category);
+    $get_tags->delet_all_tags($conction,$id);
+    $course_mangement->update_cours($type,$id,$title,$description,$content,$image_url,$status,$price,$level,$category,$prix);
+    $get_tags->insert_tag($conction, $id, $tags_insert);
     
+   
+ 
 }
 
 ?>

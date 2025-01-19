@@ -11,8 +11,8 @@ $conction = $conn->getConnection();
 class DocumentCourse extends Course {
     private string $documentPath;
 
-    public function __construct( $title, $description,$videoLink, $photo, $status, $level, $teacherId,$category,$type ) {
-        parent::__construct($title, $description,$videoLink,$photo, $status, $level, $teacherId,$category,$type);
+    public function __construct( $title, $description,$videoLink, $photo, $status, $level, $teacherId,$category,$type,$prix ) {
+        parent::__construct($title, $description,$videoLink,$photo, $status, $level, $teacherId,$category,$type,$prix);
         $this->documentPath = $videoLink;
     }
 
@@ -26,8 +26,8 @@ class DocumentCourse extends Course {
 
     public function add_cours($pdo) {
         try {
-            $sql = "INSERT INTO courses (title, description, content, photo, video_link,teacher_id,category_id,type)
-                    VALUES (:title, :description, :content, :photo, :video_link, :teacher_id,:category_id,:type)";
+            $sql = "INSERT INTO courses (title, description, content, photo, video_link,teacher_id,category_id,type,prix)
+                    VALUES (:title, :description, :content, :photo, :video_link, :teacher_id,:category_id,:type,:prix)";
             
             $stmt = $pdo->prepare($sql);
     
@@ -39,7 +39,7 @@ class DocumentCourse extends Course {
             $stmt->bindParam(':teacher_id', $this->enseignant);
             $stmt->bindParam(':category_id', $this->category);
             $stmt->bindParam(':type',$this->type);
-         
+            $stmt->bindParam(':prix',$this->prix);
             $stmt->bindParam(':video_link', $this->documentPath); 
 
             // Exécuter la requête
@@ -69,7 +69,8 @@ class DocumentCourse extends Course {
             $stmt->bindParam(':id', $id);
             $stmt->bindParam(':type',$this->type);
             if ($stmt->execute()) {
-                return true; 
+                $lastInsertedId = $pdo->lastInsertId();
+                return $lastInsertedId; 
             } else {
                 return false;  
             }
