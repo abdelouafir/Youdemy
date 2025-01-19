@@ -2,7 +2,15 @@
 require_once dirname(__FILE__, 5) . '/vendor/autoload.php';
 use app\Config\Database;
 use app\Models\Enrollment;
+session_start();
+        
+$data = $_SESSION['user'] ;
+if($data){
+    if($data['role'] != 'admin'){
+        header('location: ../../auth/login.php');
+    }
 
+}
 $conn = new Database();
 $conction = $conn->getConnection();
 $selct = new Enrollment();

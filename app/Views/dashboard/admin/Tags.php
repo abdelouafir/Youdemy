@@ -3,6 +3,16 @@ require_once dirname(__FILE__, 5).'/vendor/autoload.php';
 use app\Config\Database;
 use app\Models\Tags;
 
+session_start();
+        
+$data = $_SESSION['user'] ;
+if($data){
+    if($data['role'] != 'admin'){
+        header('location: ../../auth/login.php');
+    }
+
+}
+
 $conn = new Database();
 $conction = $conn->getConnection();
 $tag = new Tags();

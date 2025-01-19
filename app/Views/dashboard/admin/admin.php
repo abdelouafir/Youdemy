@@ -10,7 +10,9 @@ session_start();
         
 $data = $_SESSION['user'] ;
 if($data){
-    echo "hello user";
+    if($data['role'] != 'admin'){
+        header('location: ../../auth/login.php');
+    }
 }
 
 
