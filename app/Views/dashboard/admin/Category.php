@@ -7,7 +7,7 @@ session_start();
 $data = $_SESSION['user'] ;
 if($data){
     if($data['role'] != 'admin'){
-        header('location: ../../auth/login.php');
+        header('location: ../../auth/404.php');
     }
 
 }

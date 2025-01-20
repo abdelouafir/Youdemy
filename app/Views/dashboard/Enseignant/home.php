@@ -12,7 +12,7 @@ $data = $_SESSION['user'] ;
 
 if($data){
     if($data['role'] == 'student'){
-        header('location: ../../auth/login.php');
+        header('location: ../../auth/404.php');
     }
 
 }

@@ -12,10 +12,10 @@ class Login {
 
 
         if ($user) {
-            if (password_verify($password, $user['password'])) {
-                echo "corcted";
+            if (password_verify($password, $user['password'])) { 
                 session_start();
                 $_SESSION['user'] =  $user;
+                
                 header("location: ../auth/gestion_role.php");
             } else {
                 echo "no corected";
