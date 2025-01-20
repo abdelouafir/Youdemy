@@ -14,7 +14,7 @@
         $data = $_SESSION['user'] ;
         if($data){
             if($data['role'] == 'student'){
-                header('location: ../../auth/login.php');
+                header('location: ../../auth/404.php');
             }
             $id = $data['id'];
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -24,7 +24,6 @@
             $my_cours = $emrollement->get_all_mycours($conction,$id, $items_per_page, $offset);
             $total_courses = $emrollement->toutal_cours($conction,$id);
             $total_pages = ceil($total_courses / $items_per_page);
-
         }
        
         $cours_id = $_GET['delet_id'] ?? null;
