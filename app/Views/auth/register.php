@@ -8,7 +8,7 @@ use app\Models\Enrollment;
 $conn = new Database();
 $conction = $conn->getConnection();
 
-
+$message = '';
 
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -17,10 +17,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $email = $_POST['email'];
     $password = $_POST['password'];
     $password_confirm = $_POST['confirmPassword'];
-    // $user = new user;
-    // var_dump($role) ;
+    var_dump($role) ;
     $Enrollment = new Enrollment($username,$email,$password,$role);
-    $Enrollment->register($conction,$password,$username,$email);
+    $message = $Enrollment->register($conction,$password,$username,$email,$role);
 
 }
 ?>
@@ -51,12 +50,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                     Rejoignez la communauté Youdemy
                 </p>
             </div>
+            <?php if ($message): ?>
+                    <div class="mt-4 text-center text-green-600"><?= htmlspecialchars($message) ?></div>
+            <?php endif; ?>
             
             <form method="POST" action="./register.php"  class="mt-8 space-y-6">
                 <!-- Role Selection -->
                 <div class="grid grid-cols-2 gap-4">
                     <div class="relative">
-                        <input type="radio" name="role" id="student" class="peer hidden" checked>
+                        <input type="radio" name="role" id="student" class="peer hidden" checked value="student">
                         <label for="student" class="block cursor-pointer select-none rounded-lg p-4 text-center border-2 peer-checked:border-blue-500 peer-checked:bg-blue-50 hover:bg-gray-50">
                             <div class="text-blue-600 font-semibold">Étudiant</div>
                             <div class="text-gray-500 text-sm mt-2">Je veux apprendre</div>
@@ -64,7 +66,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                     </div>
                     
                     <div class="relative">
-                        <input type="radio" name="role" id="instructor" class="peer hidden">
+                        <input type="radio" name="role" id="instructor" class="peer hidden" value="Enseignant">
                         <label for="instructor" class="block cursor-pointer select-none rounded-lg p-4 text-center border-2 peer-checked:border-blue-500 peer-checked:bg-blue-50 hover:bg-gray-50">
                             <div class="text-blue-600 font-semibold">Instructeur</div>
                             <div class="text-gray-500 text-sm mt-2">Je veux enseigner</div>
@@ -131,7 +133,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             <div class="text-center mt-4">
                 <p class="text-sm text-gray-600">
                     Déjà un compte ? 
-                    <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+                    <a href="./logout.php" class="font-medium text-blue-600 hover:text-blue-500">
                         Se connecter
                     </a>
                 </p>

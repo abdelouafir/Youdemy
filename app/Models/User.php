@@ -10,17 +10,17 @@ class User {
 
 
 
-    public function register($pdo,$password,$user_name,$email) {
+    public function register($pdo,$password,$user_name,$email,$role) {
         $passwordHash = password_hash($password,PASSWORD_DEFAULT);
-        $sql = "INSERT INTO users (username, email, password) 
-                VALUES (:username, :email, :password_hash)";
+        $sql = "INSERT INTO users (username, email, password,role) 
+                VALUES (:username, :email, :password_hash,:role)";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':username', $user_name);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password_hash', $passwordHash);
-    
+        $stmt->bindParam(':role',$role);
         if ($stmt->execute()) {
-            echo 'Utilisateur ajouté avec succès.';
+            return "Votre compte est en attente d'activation. Merci de votre patience.";
         } else {
             echo 'Échec de l ajout de lutilisateur.';
         }

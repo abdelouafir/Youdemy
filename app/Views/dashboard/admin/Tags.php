@@ -4,7 +4,12 @@ use app\Config\Database;
 use app\Models\Tags;
 
 session_start();
-        
+
+if (!isset($_SESSION['user'])) {
+  header('Location: ../../auth/login.php');
+  exit;
+}
+
 $data = $_SESSION['user'] ;
 if($data){
     if($data['role'] != 'admin'){

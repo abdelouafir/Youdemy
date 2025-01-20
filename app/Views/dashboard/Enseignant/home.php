@@ -8,14 +8,22 @@ $emrollement = new Enrollment();
 
 $conction = $conn->getConnection();
 session_start();
-$data = $_SESSION['user'] ;
 
-if($data){
-    if($data['role'] == 'student'){
-        header('location: ../../auth/404.php');
+
+if (isset($_SESSION['user'])) {
+    $data = $_SESSION['user'];
+
+    if ($data['role'] == 'student') {
+        header('Location: ../../auth/404.php');
+        exit;
     }
-
+} else {
+    header('Location: ../../auth/login.php');
+    exit;
 }
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">

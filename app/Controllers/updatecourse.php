@@ -55,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $get_tags->insert_tag($conction, $id, $tags_insert);
     
    
- 
 }
 
 ?>

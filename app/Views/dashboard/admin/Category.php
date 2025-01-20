@@ -3,7 +3,11 @@
 require_once dirname(__FILE__, 5) . '/vendor/autoload.php';
 
 session_start();
-        
+
+if (!isset($_SESSION['user'])) {
+    header('Location: ../../auth/login.php');
+    exit;
+}
 $data = $_SESSION['user'] ;
 if($data){
     if($data['role'] != 'admin'){
