@@ -1,4 +1,12 @@
 <?php 
+require_once "../../../../vendor/autoload.php";
+use app\Config\Database;
+use app\Models\Enrollment;
+
+$conn = new Database();
+$emrollement = new Enrollment();
+
+$conction = $conn->getConnection();
 session_start();
 $data = $_SESSION['user'] ;
 
@@ -98,14 +106,14 @@ if($data){
                 <h3 class="text-lg font-semibold text-gray-700 mb-2">
                     Total de cours
                 </h3>
-                <p class="text-3xl font-bold text-blue-600">128</p>
+                <p class="text-3xl font-bold text-blue-600"><?php echo $emrollement->toutal_cours($conction,$data['id']) ?></p>
             </div>
             
             <div class="bg-white p-6 rounded-lg shadow">
                 <h3 class="text-lg font-semibold text-gray-700 mb-2">
                     Cours actifs
                 </h3>
-                <p class="text-3xl font-bold text-blue-600">12</p>
+                <p class="text-3xl font-bold text-blue-600"><?php echo $emrollement->toutal_cours_active($conction,$data['id'])?></p>
             </div>
             
             <div class="bg-white p-6 rounded-lg shadow">

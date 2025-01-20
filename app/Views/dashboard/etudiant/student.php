@@ -28,8 +28,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
     $searchTerm = $_POST['search'];
     $courses = $selct->search_courses($conction, $searchTerm);
 } else {
-    $courses = $selct->get_all_courses_activer($conction);
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $page = max($page,1); 
+    $items_per_page = 6;
+    $offset = ($page - 1) * $items_per_page;
+    $courses = $selct->get_all_courses_activer_paginasion($conction, $items_per_page, $offset);
+    $total_courses = $selct->toutal_cours_active_($conction,$student_id);
+    $total_pages = ceil($total_courses / $items_per_page);
+ 
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -132,7 +141,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
             <?php  } ?>
         </div>
     </div>
+    <div class="mt-8 flex justify-center">
+            <nav class="flex space-x-2">
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?php echo $page - 1; ?>" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Précédent</a>
+                <?php endif; ?>
 
+                <?php if ($page < $total_pages): ?>
+                    <a href="?page=<?php echo $page + 1; ?>" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Suivant</a>
+                <?php endif; ?>
+            </nav>
+</div>
     <!-- Achievement Section -->
     <div class="bg-gray-100 py-8">
         <div class="container mx-auto px-6">

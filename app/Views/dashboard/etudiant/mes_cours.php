@@ -13,10 +13,21 @@ session_start();
 $data = $_SESSION['user'] ;
 $id_cours = '';
 $student_id = $data['id'];
-var_dump($student_id);
-$courses = $selct->get_mes_cours($conction,$student_id);
+
+// $courses = $selct->get_mes_cours($conction,$student_id);
 $cours_id = $_GET['cours_id'] ?? null;
 
+// paginzsion 
+
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = max($page,1); 
+$items_per_page = 6;
+$offset = ($page - 1) * $items_per_page;
+$courses = $selct->get_mes_cours($conction, $student_id, $items_per_page, $offset);
+$total_courses = $selct->count_courses($conction,$student_id);
+
+$total_pages = ceil($total_courses / $items_per_page);
+// var_dump($total_courses)
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +48,7 @@ $cours_id = $_GET['cours_id'] ?? null;
             <button id="toggleSidebar" class="text-gray-600 hover:text-gray-800">
                 <i class="fas fa-bars text-xl"></i>
             </button>
-            <span class="text-xl font-bold text-blue-600">EduPortal</span>
+            <span class="text-xl font-bold text-blue-600">Youdemy</span>
         </div>
         
         <div class="flex items-center gap-6">
@@ -128,6 +139,18 @@ $cours_id = $_GET['cours_id'] ?? null;
                 </div>
             </div>
         </div>
+        <div class="mt-8 flex justify-center">
+            <nav class="flex space-x-2">
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?php echo $page - 1; ?>" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Précédent</a>
+                <?php endif; ?>
+
+                <?php if ($page < $total_pages): ?>
+                    <a href="?page=<?php echo $page + 1; ?>" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Suivant</a>
+                <?php endif; ?>
+            </nav>
+</div>
+
     </div>
 
     <!-- Footer -->
