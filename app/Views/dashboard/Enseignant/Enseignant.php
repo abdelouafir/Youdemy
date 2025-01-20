@@ -65,12 +65,11 @@
                         Gérez facilement vos cours, suivez vos élèves et organisez votre emploi du temps en un seul endroit.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <button class="px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors">
-                            Commencer
-                        </button>
-                        <button class="px-6 py-3 bg-blue-700 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors">
-                            En savoir plus
-                        </button>
+                        <<a href="./home.php" class="px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+    <i class="fas fa-arrow-left"></i>
+    Retour
+</a>
+        
                     </div>
                 </div>
                 <div class="hidden md:block">

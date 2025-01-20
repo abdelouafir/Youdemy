@@ -72,19 +72,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     <script>
-        function updateInputFields() {
-            const type = document.getElementById('type').value;
-            const videoInput = document.getElementById('video-input');
-            const documentTextarea = document.getElementById('document-textarea');
+       function updateInputFields() {
+        const type = document.getElementById('type').value;
+        const videoInput = document.getElementById('video-input');
+        const documentTextarea = document.getElementById('document-textarea'); // تم تصحيح الـ id
 
-            if (type === 'video') {
-                videoInput.style.display = 'block';
-                documentTextarea.style.display = 'none';
-            } else if (type === 'document') {
-                videoInput.style.display = 'none';
-                documentTextarea.style.display = 'block';
-            }
+        if (type === 'video') {
+            videoInput.style.display = 'block';
+            documentTextarea.style.display = 'none';
+        } else if (type === 'document') {
+            videoInput.style.display = 'none';
+            documentTextarea.style.display = 'block';
         }
+    }
+
     </script>
 </head>
 <body class="bg-gray-100 min-h-screen py-8 px-4">
@@ -150,15 +151,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <!-- Dynamic Content Input -->
+           <!-- Dynamic Content Input -->
             <div class="p-6 border-b">
                 <h2 class="text-xl font-bold text-gray-800 mb-4">Contenu</h2>
+                
+                <!-- Video Input -->
                 <div id="video-input" style="display: block;">
                     <label class="block text-sm font-medium text-gray-700 mb-1">URL de la vidéo</label>
                     <input type="text" name="video-url" class="w-full px-4 py-2 border rounded-lg" placeholder="https://exemple.com/video.mp4" value="<?php echo $update_cours['content'] ?>">
                 </div>
-                <div id="document-textargit ea" style="display: none;">
+                
+                <!-- Document Textarea -->
+                <div id="document-textarea" style="display: none;"> <!-- Fixed id -->
                     <label class="block text-sm font-medium text-gray-700 mb-1">Description complète du document</label>
-                    <textarea name="document" rows="4" class="w-full px-4 py-2 border rounded-lg" placeholder="Description complète">value="<?php echo $update_cours['content'] ?></textarea>
+                    <textarea name="document" rows="4" class="w-full px-4 py-2 border rounded-lg" placeholder="Description complète"><?php echo $update_cours['content']; ?></textarea>
                 </div>
             </div>
 
@@ -196,5 +202,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         placeholder: 'Select tags...',
     });
    </script>
+   <script src="../public/js/script.js"></script>
 </body>
 </html>
