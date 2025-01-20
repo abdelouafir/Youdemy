@@ -71,7 +71,8 @@ class VideoCourse extends Course {
             $stmt->bindParam(':id', $id);
             $stmt->bindParam(':type',$this->type);
             if ($stmt->execute()) {
-                return true; 
+                $lastInsertedId = $pdo->lastInsertId();
+                return $lastInsertedId; 
             } else {
                 return false;  
             }

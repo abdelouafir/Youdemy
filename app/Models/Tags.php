@@ -92,7 +92,14 @@ public function get_tag($pdo, $id) {
   }
   return null;
 }
+public function delet_all_tags($pdo, $id) {
+  $sql = "DELETE FROM course_tags WHERE course_id = :id";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindParam(':id', $id);
+  return $stmt->execute();
+}
 
 }
+
 
 ?>

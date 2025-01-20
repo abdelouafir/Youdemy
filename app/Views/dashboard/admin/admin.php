@@ -3,7 +3,10 @@
 
 require_once dirname(__FILE__, 5).'/vendor/autoload.php';
 use app\Config\Database;
+use app\Models\admin;
+
 $conn = new Database();
+$toutal_user = new admin();
 $conction = $conn->getConnection();
 
 session_start();
@@ -14,7 +17,6 @@ if($data){
         header('location: ../../auth/login.php');
     }
 }
-
 
 
 ?>
@@ -67,7 +69,7 @@ if($data){
                                 </div>
                                 <div class="flex-1 text-right md:text-center">
                                     <h2 class="font-bold uppercase text-gray-600">Total Étudiant</h2>
-                                    <p class="font-bold text-3xl">49 <span class="text-green-500"><i class="fas fa-caret-up text-xl"></i></span></p>
+                                    <p class="font-bold text-3xl"><?php echo $toutal_user->toutal_student($conction);?> <span class="text-green-500"><i class="fas fa-caret-up text-xl"></i></span></p>
                                 </div>
                             </div>
                         </div>
@@ -85,7 +87,7 @@ if($data){
                                 </div>
                                 <div class="flex-1 text-right md:text-center">
                                     <h2 class="font-bold uppercase text-gray-600">Total Users</h2>
-                                    <p class="font-bold text-3xl">249 <span class="text-pink-500"><i class="fas fa-exchange-alt text-xl"></i></span></p>
+                                    <p class="font-bold text-3xl"><?php echo $toutal_user->toutal_users($conction);?><span class="text-pink-500"><i class="fas fa-exchange-alt text-xl"></i></span></p>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +120,7 @@ if($data){
                                 </div>
                                 <div class="flex-1 text-right md:text-center">
                                     <h2 class="font-bold uppercase text-gray-600">TOTAL Enseignant</h2>
-                                    <p class="font-bold text-3xl">152</p>
+                                    <p class="font-bold text-3xl"><?php echo $toutal_user->toutal_enseignant($conction);?></p>
                                 </div>
                             </div>
                         </div>
@@ -136,7 +138,7 @@ if($data){
                         </div>
                         <div class="flex-1 text-right md:text-center">
                             <h2 class="font-bold uppercase text-gray-600">COURS</h2>
-                            <p class="font-bold text-3xl">7</p>
+                            <p class="font-bold text-3xl"><?php echo $toutal_user->toutal_cours($conction);?></p>
                         </div>
                     </div>
                 </div>
@@ -152,7 +154,7 @@ if($data){
                                 </div>
                                 <div class="flex-1 text-right md:text-center">
                                     <h2 class="font-bold uppercase text-gray-600">ADMINS</h2>
-                                    <p class="font-bold text-3xl">3 <span class="text-red-500"><i class="fas fa-caret-up"></i></span></p>
+                                    <p class="font-bold text-3xl"><?php echo $toutal_user->toutal_admin($conction);?> <span class="text-red-500"><i class="fas fa-caret-up"></i></span></p>
                                 </div>
                             </div>
                         </div>

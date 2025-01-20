@@ -23,7 +23,7 @@ class CourseManager {
              $id_cours = $VideoCourse->add_cours($this->conction);
             return $id_cours;
         } elseif ($type === 'document') {
-            $documont_cours = new DocumentCourse($title, $description,$videoLink,$photo, $status,$level,$teacherId,$category,$type);
+            $documont_cours = new DocumentCourse($title, $description,$videoLink,$photo, $status,$level,$teacherId,$category,$type,$prix);
             $id_cours = $documont_cours->add_cours($this->conction);
             return $id_cours;
         } else {
@@ -38,8 +38,9 @@ class CourseManager {
              $id_cours = $VideoCourse->updateCurse($this->conction,$id);
             return $id_cours;
         } elseif ($type === 'document') {
-            $documont_cours = new DocumentCourse($title, $description,$videoLink,$photo, $status,$price,$level,$category,$type);
-            $documont_cours->updateCurse($this->conction,$id);
+            $documont_cours = new DocumentCourse($title, $description,$videoLink,$photo, $status,$price,$level,$category,$type,$prix);
+             $id_cours = $documont_cours->updateCurse($this->conction,$id);
+             return $id_cours;
         } else {
             return "les type de doner no coerct";
         }

@@ -3,15 +3,7 @@
         use app\Config\Database;
         use app\Models\Enrollment;
 
-        session_start();
-        
-        $data = $_SESSION['user'] ;
-        if($data){
-            if($data['role'] == 'student'){
-                header('location: ../../auth/login.php');
-            }
-        
-        }
+    
        // use app\Models\Course;
         $conn = new Database();
         $emrollement = new Enrollment();
@@ -21,8 +13,18 @@
         session_start();
         $data = $_SESSION['user'] ;
         if($data){
+            if($data['role'] == 'student'){
+                header('location: ../../auth/login.php');
+            }
             $id = $data['id'];
-            $my_cours = $emrollement->get_all_mycours($conction,$id);
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $page = max($page,1); 
+            $items_per_page = 6;
+            $offset = ($page - 1) * $items_per_page;
+            $my_cours = $emrollement->get_all_mycours($conction,$id, $items_per_page, $offset);
+            $total_courses = $emrollement->toutal_cours($conction,$id);
+            $total_pages = ceil($total_courses / $items_per_page);
+
         }
        
         $cours_id = $_GET['delet_id'] ?? null;
@@ -32,6 +34,8 @@
             $emrollement->delete_cours($conction,$cours_id);
             header("location: ./Enseignant.php");
         }
+
+        
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -135,10 +139,18 @@
     </div>
     <?php  } ?>
 
+    <div class="mt-8 flex justify-center">
+        <nav class="flex space-x-2">
+            <?php if ($page > 1): ?>
+                <a href="?page=<?php echo $page - 1; ?>" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Précédent</a>
+            <?php endif; ?>
 
-
+            <?php if ($page < $total_pages): ?>
+                <a href="?page=<?php echo $page + 1; ?>" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Suivant</a>
+            <?php endif; ?>
+        </nav>
+   </div>
 </div>
-
 
 
 </body>

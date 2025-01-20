@@ -56,7 +56,7 @@ class Enrollment extends user {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC); 
     }
-    public function get_all_mycours($pdo,$id) {
+    public function get_all_mycours($pdo,$id,$limit, $offset) {
         $sql = "SELECT 
            courses.id,
            courses.title,
@@ -72,7 +72,10 @@ class Enrollment extends user {
         FROM courses
         JOIN users ON users.id = courses.teacher_id
         JOIN categories ON categories.id = courses.category_id
-        WHERE courses.teacher_id = :id";
+        WHERE courses.teacher_id = :id
+        LIMIT $limit OFFSET $offset;
+        ";
+        
          $stmt = $pdo->prepare($sql);
          $stmt->bindParam(':id', $id);
          $stmt->execute();
@@ -102,6 +105,35 @@ class Enrollment extends user {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC); 
     }
+  
+
+    public function get_all_courses_activer_paginasion($pdo, $limit, $offset) {
+        $sql = "SELECT 
+               courses.id,
+               courses.title,
+               courses.content,
+               courses.description,
+               courses.photo,
+               courses.prix,
+               courses.status,
+               courses.video_link,
+               users.username,
+               users.email,
+               categories.name AS category_name
+            FROM courses
+            JOIN users ON users.id = courses.teacher_id
+            JOIN categories ON categories.id = courses.category_id
+            WHERE courses.status = 'active'
+            LIMIT :limit OFFSET :offset"; 
+    
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
     public function delete_cours($connection, $id) {
         $sql = "DELETE FROM courses WHERE id = :id";
         $stmt = $connection->prepare($sql);
@@ -118,7 +150,6 @@ class Enrollment extends user {
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':id', $id);
         $valur = $stmt->execute(); 
-        print_r($valur);
         return $valur;
     }
     public function update_status_ban($pdo, $id) {
@@ -131,7 +162,7 @@ class Enrollment extends user {
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':id', $id);
         $valur = $stmt->execute(); 
-        print_r($valur);
+     
         return $valur;
     }
     public function search_courses($connection, $searchTerm)
@@ -143,6 +174,46 @@ class Enrollment extends user {
     $stmt->bindParam(':search', $searchTerm);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+public function toutal_cours ($pdo,$id){
+    $sql = "SELECT count(*) AS 'toutal_student' FROM courses
+    WHERE teacher_id = $id 
+    ";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['toutal_student'];
+}
+public function toutal_cours_active ($pdo,$id){
+    $sql = "SELECT count(*) AS 'toutal_student' FROM courses
+    WHERE teacher_id = $id and status != 'attente'
+    ";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['toutal_student'];
+}
+
+public function toutal_cours_active_ ($pdo){
+    $sql = "SELECT count(*) AS 'toutal_student' FROM courses
+    WHERE status != 'attente'
+    ";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['toutal_student'];
+}
+
+public function toutal_cours_attonte ($pdo,$id){
+    $sql = "SELECT count(*) AS 'toutal_student' FROM courses
+    WHERE teacher_id = $id and status == 'attente'
+    ";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['toutal_student'];
 }
 
 

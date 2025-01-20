@@ -35,29 +35,54 @@ class User {
         $stmt->execute();
     }
 
-    public function get_mes_cours($pdo,$id){
-        $sql = "SELECT 
-            courses.id,
-            courses.title,
-            courses.content,
-            courses.description,
-            courses.photo,
-            courses.prix,
-            courses.status,
-            courses.video_link,
-            users.username,
-            users.email,
-            categories.name AS category_name
-        FROM courses
-        JOIN users ON users.id = courses.teacher_id
-        JOIN Enrollment ON Enrollment.course_id = courses.id
-        JOIN categories ON categories.id = courses.category_id
-        WHERE Enrollment.student_id  = $id;
+    public function get_mes_cours($pdo, $id, $limit, $offset) {
+        $sql = "
+            SELECT 
+                courses.id,
+                courses.title,
+                courses.content,
+                courses.description,
+                courses.photo,
+                courses.prix,
+                courses.status,
+                courses.video_link,
+                users.username,
+                users.email,
+                categories.name AS category_name
+            FROM courses
+            JOIN users ON users.id = courses.teacher_id
+            JOIN Enrollment ON Enrollment.course_id = courses.id
+            JOIN categories ON categories.id = courses.category_id
+            WHERE Enrollment.student_id = :id
+            LIMIT $limit OFFSET $offset;
         ";
+
         $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return [];
+        }
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    public function count_courses($pdo, $id) {
+        $stmt = $pdo->prepare("SELECT COUNT(*) AS total FROM courses 
+        JOIN Enrollment ON Enrollment.course_id = courses.id 
+        WHERE Enrollment.student_id = :id");
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC); 
+        return $data['total'];
+    }
+    
+    
+    
+    
+    
+
     
 }
 ?>
