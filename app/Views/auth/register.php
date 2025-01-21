@@ -11,17 +11,40 @@ $conction = $conn->getConnection();
 $message = '';
 
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $role = $_POST['role'];     
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $password_confirm = $_POST['confirmPassword'];
-    var_dump($role) ;
-    $Enrollment = new Enrollment($username,$email,$password,$role);
-    $message = $Enrollment->register($conction,$password,$username,$email,$role);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $role = $_POST['role'] ?? '';
+    $username = $_POST['username'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $password_confirm = $_POST['confirmPassword'] ?? '';
 
+ 
+    $errors = [];
+
+   
+    if (empty($role)) {
+        $errors['role'] = "Veuillez sélectionner un rôle.";
+    }
+
+    if (empty($username) || strlen($username) < 3) {
+        $errors['username'] = "Le nom d'utilisateur est requis et doit contenir au moins 3 caractères.";
+    }
+
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = "Veuillez entrer une adresse e-mail valide.";
+    }
+
+    if (empty($password) || strlen($password) <= 4) {
+        $errors['password'] = "Le mot de passe est requis et doit contenir au moins 6 caractères.";
+    }
+
+    if (empty($errors)) {
+        $Enrollment = new Enrollment($username, $email, $password, $role);
+        $message = $Enrollment->register($conction, $password, $username, $email, $role);
+        echo "<p style='color: green;'>$message</p>";
+    }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -81,8 +104,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             <label for="username" class="block text-sm font-medium text-gray-700">
                                 user name
                             </label>
-                            <input type="text" id="username" name="username" required
+                            <input type="text" id="username" name="username"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+                                <?php if (isset($errors['username'])): ?>
+                                <p class="text-red-500 text-sm"><?= $errors['username'] ?></p>
+                              <?php endif; ?>
                         </div>
                     </div>
 
@@ -90,30 +116,39 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                         <label for="email" class="block text-sm font-medium text-gray-700">
                             Email
                         </label>
-                        <input type="email" id="email" name="email" required
+                        <input type="email" id="email" name="email"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+
+                            <?php if (isset($errors['email'])): ?>
+                                <p class="text-red-500 text-sm"><?= $errors['email'] ?></p>
+                              <?php endif; ?>
+                        
                     </div>
 
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700">
                             Mot de passe
                         </label>
-                        <input type="password" id="password" name="password" required
+                        <input type="password" id="password" name="password"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
+
+                        <?php if (isset($errors['password'])): ?>
+                            <p class="text-red-500 text-sm"><?= $errors['password'] ?></p>
+                            <?php endif; ?>
                     </div>
 
                     <div>
                         <label for="confirmPassword" class="block text-sm font-medium text-gray-700">
                             Confirmer le mot de passe
                         </label>
-                        <input type="password" id="confirmPassword" name="confirmPassword" required
+                        <input type="password" id="confirmPassword" name="confirmPassword"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
                     </div>
                 </div>
 
                 <!-- Terms -->
                 <div class="flex items-center">
-                    <input type="checkbox" id="terms" name="terms" required
+                    <input type="checkbox" id="terms" name="terms"
                         class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                     <label for="terms" class="ml-2 block text-sm text-gray-900">
                         J'accepte les <a href="#" class="text-blue-600 hover:text-blue-500">conditions d'utilisation</a>
