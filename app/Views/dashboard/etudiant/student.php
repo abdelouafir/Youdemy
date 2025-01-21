@@ -13,12 +13,19 @@ session_start();
 $data = $_SESSION['user'] ;
 $id_cours = '';
 $student_id = $data['id'];
-
 $user = new User();
 
-if (isset($_GET['cours_id'])) {
-    $id_cours = $_GET['cours_id'];
-    $user->Enrollment($conction,$id_cours,$student_id);
+
+$message1 = "Échec, tu es déjà inscrit.";
+$message2 = "L'etudiant est inscrit avec succés";
+$message = '';
+if (isset($_GET['cours_id']) && isset($_GET['teacher_id'])) {
+    $cours_id = $_GET['cours_id'];
+    $teacher_id = $_GET['teacher_id'];
+    
+
+    $message = $user->Enrollment($conction,$cours_id,$student_id,$teacher_id);
+    
 }
 
 $searchTerm = '';
@@ -112,6 +119,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
 
     <!-- Recommended Courses -->
     <div class="container mx-auto px-6 py-8">
+    <?php
+    if ($message === 1) {
+        echo "<div id='message' class='flex justify-center bg-green-100 text-white p-4 rounded'>{$message2}</div>";
+    } else {
+        echo "<div id='message' class='flex justify-center bg-red-100 text-white p-4 rounded'>{$message1}</div>";
+    }
+    ?>
+</div>
+    <script>
+        setTimeout(function () {
+            const messageDiv = document.getElementById('message');
+            if (messageDiv) {
+                messageDiv.style.display = 'none';
+            }
+        }, 2000);
+    </script>
+
         <h2 class="text-2xl font-bold text-gray-800 mb-6">Recommandé pour vous</h2>
         <div class="grid md:grid-cols-3 gap-6">
             <!-- Course Card 1 -->
@@ -130,9 +154,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
                                 <i class="fas fa-info-circle"></i> 
                             </a>
 
-                            <a href="./student.php?cours_id=<?php echo $cours['id']?>" id="enrollButton" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition ml-2">
-                                <i class="fas fa-user-plus"></i> Enrollment
-                            </a>
+                            <a href="./student.php?cours_id=<?php echo $cours['id']; ?>&teacher_id=<?php echo $cours['teacher_id']; ?>" 
+                                id="enrollButton" 
+                                class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition ml-2">
+                                    <i class="fas fa-user-plus"></i> Enrollment
+                                </a>
+
                         </div>
                     </div>
                 </div>

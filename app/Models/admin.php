@@ -68,7 +68,7 @@ class admin extends user {
             return $result['toutal_student'];
         }
         public function toutal_enseignant ($pdo){
-            $sql = "SELECT count(*) AS 'toutal_student' FROM users WHERE role = 'enseignat'";
+            $sql = "SELECT count(*) AS 'toutal_student' FROM users WHERE role = 'Enseignant'";
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -88,6 +88,8 @@ class admin extends user {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result['toutal_student'];
         }
+
+       
     }
     
 

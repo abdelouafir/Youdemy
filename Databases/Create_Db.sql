@@ -9,7 +9,7 @@ CREATE TABLE users (
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role ENUM('student', 'Enseignant', 'admin') NOT NULL,
-    status ENUM('active', 'block') NOT NULL DEFAULT 'active'
+    status ENUM('active', 'block','attente') NOT NULL DEFAULT 'attente'
 );
 
 CREATE TABLE categories (
@@ -27,7 +27,7 @@ CREATE TABLE courses (
     category_id INT,
     video_link VARCHAR(255), 
     photo VARCHAR(255), 
-    status ENUM('active', 'attente') NOT NULL DEFAULT 'attente',
+    status ENUM('active', 'attente','block') NOT NULL DEFAULT 'attente',
     prix FLOAT,
     Durée TIME,
     Niveau ENUM('Débutant', 'Intermédiaire', 'Avancé') NOT NULL DEFAULT 'Intermédiaire',
@@ -52,6 +52,7 @@ CREATE TABLE stud_courses (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
     course_id INT NOT NULL,
+  
     FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
 );
@@ -59,6 +60,7 @@ CREATE TABLE stud_courses (
 CREATE TABLE enrollment (
     student_id INT NOT NULL,
     course_id INT NOT NULL,
+     Enseignant_id INT NOT NULL,
     PRIMARY KEY (student_id, course_id),
     FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE

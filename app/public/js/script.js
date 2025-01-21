@@ -21,3 +21,6 @@ toggleButton.addEventListener('click', () => {
         sidebarTexts.forEach(text => text.classList.add('hidden'));
     }
 });
+
+
+   

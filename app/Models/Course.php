@@ -32,5 +32,6 @@ abstract class Course {
     }  
 
     abstract public function add_cours($pdo);
+    abstract public function updateCurse($pdi,$id);
 }
 ?>

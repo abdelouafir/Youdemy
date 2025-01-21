@@ -4,7 +4,11 @@ use app\Config\Database;
 use app\Models\admin;
 
 session_start();
-        
+if (!isset($_SESSION['user'])) {
+    header('Location: ../../auth/login.php');
+    exit;
+}
+
 $data = $_SESSION['user'] ;
 if($data){
     if($data['role'] != 'admin'){
@@ -22,7 +26,7 @@ $id_delete = $_GET['id_delete'] ?? null;
 $id_active = $_GET['id_active'] ?? NULL;
 $id_ban = $_GET['id_ban'] ?? NULL;
 
-var_dump($id_delete);
+
 if($id_delete != null){
     $select->delete_user($conction,$id_delete);
     header("location: ./GestionUtilsateur.php");
@@ -102,9 +106,7 @@ if($id_ban != null){
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Rôle
                             </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Date d'inscription
-                            </th>
+                        
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Statut
                             </th>
@@ -135,9 +137,6 @@ if($id_ban != null){
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                     <?= $user['role']?>
                                 </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                01/01/2025
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
@@ -181,30 +180,7 @@ if($id_ban != null){
                         </button>
                     </div>
                     <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                        <div>
-                            <p class="text-sm text-gray-700">
-                                Affichage de <span class="font-medium">1</span> à <span class="font-medium">3</span> sur <span class="font-medium">50</span> utilisateurs
-                            </p>
-                        </div>
-                        <div>
-                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                                <button class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                                    Précédent
-                                </button>
-                                <button class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                                    1
-                                </button>
-                                <button class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                                    2
-                                </button>
-                                <button class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                                    3
-                                </button>
-                                <button class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                                    Suivant
-                                </button>
-                            </nav>
-                        </div>
+                     
                     </div>
                 </div>
             </div>

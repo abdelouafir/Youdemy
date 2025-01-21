@@ -20,31 +20,83 @@
         session_start();
         
         $data = $_SESSION['user'] ;
-  
-       
+        if($data){
+            echo "";
+        }   
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $type = $_POST['type']; 
-            $title = $_POST['title'];
-            $description = $_POST['description'];
-            $content = ($type === 'video') ? $_POST['video-url'] : $_POST['document'];
-            $tags_insert = $_POST['tags'] ?? [];  
-            $duration = $_POST['duration'];
-            $category = $_POST['category'];
-            $price = $_POST['price'];
-            $image_url = $_POST['image-url'];
-            $teacherId = $data['id'];
-            $status = 1; 
-            $level = $_POST['level']; 
-            // $teacherId = $_POST['teacherId'];
-            $extraContent = ($type === 'document') ? $_POST['document'] : '';
-            $id_cours =  $creat_cours->createCourse($type, $title, $description,$content,$image_url, $status, $price, $level, $teacherId,$category);
-            if ($id_cours) {
-                $get_tags->insert_tag($conction, $id_cours, $tags_insert);
-            } else {
-                echo "Erreur lors de l'ajout de l'article.";
+            $errors = []; 
+        
+          
+            $title = trim($_POST['title'] ?? '');
+            if (empty($title)) {
+                $errors['title'] = "Le titre est requis.";
+            }
+        
+            $description = trim($_POST['description'] ?? '');
+            if (empty($description)) {
+                $errors['description'] = "La description est requise.";
+            }
+        
+            $type = $_POST['type'] ?? '';
+            if (!in_array($type, ['video', 'document'])) {
+                $errors['type'] = "Le type de contenu est invalide.";
+            }
+        
+            $content = ($type === 'video') ? trim($_POST['video-url'] ?? '') : trim($_POST['document'] ?? '');
+            if (empty($content)) {
+                $errors[''] = $type === 'video' ? "L'URL de la vidéo est requise." : "Le contenu du document est requis.";
+            }
+
+            $tags_insert = $_POST['tags'] ?? [];
+            if (!is_array($tags_insert)) {
+                $errors[] = "Les tags sont invalides.";
+            }
+        
+            $duration = $_POST['duration'] ?? null;
+            if (empty($duration) || !is_numeric($duration) || $duration <= 0) {
+                $errors[] = "La durée doit être un nombre positif.";
+            }
+        
+            $category = $_POST['category'] ?? '';
+            if (empty($category)) {
+                $errors['category'] = "La catégorie est requise.";
+            }
+        
+            $price = $_POST['price'] ?? null;
+            if (empty($price) || !is_numeric($price) || $price < 0) {
+                $errors['price'] = "Le prix doit être un nombre positif.";
+            }
+        
+            $image_url = trim($_POST['image-url'] ?? '');
+            if (empty($image_url) || !filter_var($image_url, FILTER_VALIDATE_URL)) {
+                $errors['image-url'] = "Une URL valide pour l'image est requise.";
+            }
+        
+            $level = $_POST['level'] ?? '';
+            if (!in_array($level, ['debutant', 'intermediaire', 'avance', 'expert'])) {
+                $errors['level'] = "Le niveau sélectionné est invalide.";
+            }
+        
+            $teacherId = $data['id'] ?? null;
+            if (empty($teacherId)) {
+                $errors[] = "L'identifiant de l'enseignant est requis.";
+            }
+        
+            if (empty($errors)) {
+              
+                $status = 1; 
+                $id_cours = $creat_cours->createCourse($type, $title, $description, $content, $image_url, $status, (float)$price, $level, $teacherId, $category);
+        
+                if ($id_cours) {
+                    $get_tags->insert_tag($conction, $id_cours, $tags_insert);
+                    echo "Cours ajouté avec succès.";
+                } else {
+                    echo "Erreur lors de l'ajout du cours.";
+                }
             }
         }
+        
         ?>
 
 
@@ -96,6 +148,9 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Titre du cours</label>
                         <input type="text" name="title" class="w-full px-4 py-2 border rounded-lg" placeholder="Titre">
+                        <?php if (isset($errors['title'])): ?>
+                            <p class="text-red-500 text-sm"><?= $errors['title'] ?></p>
+                        <?php endif; ?>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
@@ -108,6 +163,9 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Description courte</label>
                         <input type="text" name="description" class="w-full px-4 py-2 border rounded-lg" placeholder="Description courte">
+                        <?php if (isset($errors['description'])): ?>
+                            <p class="text-red-500 text-sm"><?= $errors['description'] ?></p>
+                        <?php endif; ?>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
@@ -145,23 +203,29 @@
                 <div id="video-input" style="display: block;">
                     <label class="block text-sm font-medium text-gray-700 mb-1">URL de la vidéo</label>
                     <input type="url" name="video-url" class="w-full px-4 py-2 border rounded-lg" placeholder="https://exemple.com/video.mp4">
+                    <?php if (isset($errors['type'])): ?>
+                            <p class="text-red-500 text-sm"><?= $errors['type'] ?></p>
+                        <?php endif; ?>
                 </div>
                 <div id="document-textarea" style="display: none;">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Description complète du document</label>
-                    <textarea name="document" rows="4" class="w-full px-4 py-2 border rounded-lg" placeholder="Description complète"></textarea>
+                    <textarea name="document" rows="100" class="w-full px-4 py-2 border rounded-lg" placeholder="Description complète"></textarea>
+                    <?php if (isset($errors['document'])): ?>
+                            <p class="text-red-500 text-sm"><?= $errors['document'] ?></p>
+                        <?php endif; ?>
                 </div>
             </div>
 
             <!-- Additional Information -->
             <div class="p-6 border-b">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Durée (en heures)</label>
-                        <input type="number" name="duration" class="w-full px-4 py-2 border rounded-lg" placeholder="Durée">
-                    </div>
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Prix (€)</label>
                         <input type="number" name="price" class="w-full px-4 py-2 border rounded-lg" placeholder="Prix">
+                        <?php if (isset($errors['price'])): ?>
+                            <p class="text-red-500 text-sm"><?= $errors['price'] ?></p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -170,12 +234,15 @@
             <div class="p-6 border-b">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
                 <input type="url" name="image-url" class="w-full px-4 py-2 border rounded-lg" placeholder="https://exemple.com/image.jpg">
+                <?php if (isset($errors['image-url'])): ?>
+                    <p class="text-red-500 text-sm"><?= $errors['image-url'] ?></p>
+                <?php endif; ?>
             </div>
 
             <!-- Submit Button -->
             <div class="p-6 bg-gray-50 flex justify-end space-x-3">
                 <button type="reset" class="px-4 py-2 border rounded-lg text-gray-700 hover:bg-gray-100">Annuler</button>
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Créer le cours</button>
+                <button id="courseForm" type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Créer le cours</button>
             </div>
         </form>
     </div>
@@ -186,5 +253,6 @@
         placeholder: 'Select tags...',
     });
    </script>
+   <script src="../../public/js/input-validasion.js"></script>
 </body>
 </html>

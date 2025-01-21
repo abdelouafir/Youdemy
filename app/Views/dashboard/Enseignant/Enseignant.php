@@ -11,6 +11,12 @@
         $conction = $conn->getConnection();
        
         session_start();
+        
+        if (!isset($_SESSION['user'])) {
+            header('Location: ../../auth/login.php');
+            exit;
+        }
+
         $data = $_SESSION['user'] ;
         if($data){
             if($data['role'] == 'student'){
@@ -59,12 +65,11 @@
                         Gérez facilement vos cours, suivez vos élèves et organisez votre emploi du temps en un seul endroit.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <button class="px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors">
-                            Commencer
-                        </button>
-                        <button class="px-6 py-3 bg-blue-700 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors">
-                            En savoir plus
-                        </button>
+                        <<a href="./home.php" class="px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+                        <i class="fas fa-arrow-left"></i>
+                        Retourx
+                    </a>
+                            
                     </div>
                 </div>
                 <div class="hidden md:block">
@@ -112,7 +117,7 @@
      <?php foreach($my_cours as $course) { ?>
     <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
         <div class="relative h-48">
-            <img src="/api/placeholder/400/320" alt="Mathématiques avancées" class="w-full h-full object-cover">
+            <img src="<?php echo $course['photo'] ?>" alt="Mathématiques avancées" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
             <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
                 <h2 class="text-xl font-bold"><?php echo $course['title'] ?></h2>
@@ -121,10 +126,10 @@
         </div>
         <div class="p-4">
             <span class="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-md">Niveau : Terminal</span>
-            <p class="mt-3 text-sm text-gray-600"><?php echo $course['content']?></p>
+            <p class="mt-3 text-sm text-gray-600"><?php echo $course['description']?></p>
             <div class="mt-4 grid grid-cols-2 gap-3">
                 <div class="flex items-center gap-2 text-gray-600"><i class="far fa-calendar text-sm"></i><span>Lundi</span></div>
-                <div class="flex items-center gap-2 text-gray-600"><i class="fas fa-users text-sm"></i><span>25 étudiants</span></div>
+                <div class="flex items-center gap-2 text-gray-600"><i class="fas fa-users text-sm"></i><span><?php echo $emrollement->getTotalStudentsPerCourse($conction, $course['id'])?></span></div>
 
             </div>
             <div class="mt-6 flex justify-between items-center">

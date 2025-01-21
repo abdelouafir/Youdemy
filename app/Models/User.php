@@ -10,30 +10,49 @@ class User {
 
 
 
-    public function register($pdo,$password,$user_name,$email) {
+    public function register($pdo,$password,$user_name,$email,$role) {
         $passwordHash = password_hash($password,PASSWORD_DEFAULT);
-        $sql = "INSERT INTO users (username, email, password) 
-                VALUES (:username, :email, :password_hash)";
+        $sql = "INSERT INTO users (username, email, password,role) 
+                VALUES (:username, :email, :password_hash,:role)";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':username', $user_name);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password_hash', $passwordHash);
-    
+        $stmt->bindParam(':role',$role);
         if ($stmt->execute()) {
-            echo 'Utilisateur ajouté avec succès.';
+            return "Votre compte est en attente d'activation. Merci de votre patience.";
         } else {
             echo 'Échec de l ajout de lutilisateur.';
         }
     }
 
-    public function Enrollment($pdo, $id_cours, $id_etudent) {
-        $sql = "INSERT INTO enrollment (student_id, course_id) VALUES (:id_etudent, :id_cours)";
-        $stmt = $pdo->prepare($sql);
+    public function Enrollment($pdo, $id_cours, $id_etudent, $Enseignant_id) {
+        $checkSql = "SELECT * FROM enrollment WHERE student_id = :id_etudent AND course_id = :id_cours AND Enseignant_id = :Enseignant_id";
+        $checkStmt = $pdo->prepare($checkSql);
+        $checkStmt->bindParam(':id_etudent', $id_etudent);
+        $checkStmt->bindParam(':id_cours', $id_cours);
+        $checkStmt->bindParam(':Enseignant_id', $Enseignant_id);
+        $checkStmt->execute();
+        
+        if ($checkStmt->rowCount() > 0) {
+            return 0;
+        } else {
+
+            $sql = "INSERT INTO enrollment (student_id, course_id, Enseignant_id) VALUES (:id_etudent, :id_cours, :Enseignant_id)";
+            $stmt = $pdo->prepare($sql);
     
-        $stmt->bindParam(':id_etudent', $id_etudent);
-        $stmt->bindParam(':id_cours', $id_cours);
-        $stmt->execute();
+            $stmt->bindParam(':id_etudent', $id_etudent);
+            $stmt->bindParam(':id_cours', $id_cours);
+            $stmt->bindParam(':Enseignant_id', $Enseignant_id);
+    
+            if ($stmt->execute()) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
     }
+    
 
     public function get_mes_cours($pdo, $id, $limit, $offset) {
         $sql = "
