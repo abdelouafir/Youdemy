@@ -3,7 +3,7 @@
             <button id="toggleSidebar" class="text-gray-600 hover:text-gray-800">
                 <i class="fas fa-bars text-xl"></i>
             </button>
-            <span class="text-xl font-bold text-blue-600">EduPortal</span>
+            <span class="text-xl font-bold text-blue-600">Youdemy</span>
         </div>
         
         <div class="flex items-center gap-6">

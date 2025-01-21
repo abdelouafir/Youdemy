@@ -66,10 +66,10 @@
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
                         <<a href="./home.php" class="px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-all shadow-md hover:shadow-lg flex items-center gap-2">
-    <i class="fas fa-arrow-left"></i>
-    Retour
-</a>
-        
+                        <i class="fas fa-arrow-left"></i>
+                        Retour
+                    </a>
+                            
                     </div>
                 </div>
                 <div class="hidden md:block">
@@ -129,7 +129,7 @@
             <p class="mt-3 text-sm text-gray-600"><?php echo $course['content']?></p>
             <div class="mt-4 grid grid-cols-2 gap-3">
                 <div class="flex items-center gap-2 text-gray-600"><i class="far fa-calendar text-sm"></i><span>Lundi</span></div>
-                <div class="flex items-center gap-2 text-gray-600"><i class="fas fa-users text-sm"></i><span>25 étudiants</span></div>
+                <div class="flex items-center gap-2 text-gray-600"><i class="fas fa-users text-sm"></i><span><?php echo $emrollement->getTotalStudentsPerCourse($conction, $course['id'])?></span></div>
 
             </div>
             <div class="mt-6 flex justify-between items-center">

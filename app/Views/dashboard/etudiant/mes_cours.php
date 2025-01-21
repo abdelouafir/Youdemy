@@ -91,7 +91,7 @@ $total_pages = ceil($total_courses / $items_per_page);
 
     <!-- Recommended Courses -->
     <div class="container mx-auto px-6 py-8">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Recommandé pour vous</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">mes courses</h2>
         <div class="grid md:grid-cols-3 gap-6">
             <!-- Course Card 1 -->
             <?php foreach ($courses as $cours) { ?>

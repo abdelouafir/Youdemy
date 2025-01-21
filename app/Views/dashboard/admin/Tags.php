@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
             <td class="px-4 py-2"><?=$tag['id'] ?></td>
             <td class="px-4 py-2"><?=$tag['name'] ?></td>
             <td class="px-4 py-2 text-center">
-              <form action="../../../Models/updateTag.php" method="POST" class="inline-block">
+              <form action="../../../controllers/updateTag.php" method="POST" class="inline-block">
               <input type="hidden" name="update_id" value="<?php echo $tag['id']; ?>">
               <button type="submit" class="ml-2 text-white py-2 px-3 rounded hover:bg-yellow-600">
               <i class="fa-solid fa-pen-to-square" style="color: #0b4ec1;"></i>

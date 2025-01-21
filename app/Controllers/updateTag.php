@@ -11,7 +11,7 @@ $ins = new Tags();
 // Récupération des données pour mise à jour
 if (isset($_POST['update_id'])) {
     $id = $_POST['update_id'];
-    $update = Tags::get_tag($conction, $id);
+    $update = Tags::get_un_tag($conction, $id);
 }
 
 // Mise à jour des données

@@ -20,8 +20,11 @@
         session_start();
         
         $data = $_SESSION['user'] ;
-  
-       
+        if($data){
+            echo "hello user";
+        }
+
+        var_dump($data['id']);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $type = $_POST['type']; 
@@ -31,7 +34,7 @@
             $tags_insert = $_POST['tags'] ?? [];  
             $duration = $_POST['duration'];
             $category = $_POST['category'];
-            $price = $_POST['price'];
+            $price = (float)$_POST['price'];
             $image_url = $_POST['image-url'];
             $teacherId = $data['id'];
             $status = 1; 
@@ -44,6 +47,7 @@
             } else {
                 echo "Erreur lors de l'ajout de l'article.";
             }
+          
         }
         ?>
 
@@ -88,14 +92,14 @@
         </div>
 
         <!-- Form -->
-        <form action="./updatecourse.php" method="POST" class="bg-white rounded-lg shadow-md overflow-hidden">
+        <form action="./create.php" method="POST" class="bg-white rounded-lg shadow-md overflow-hidden">
             <!-- General Information -->
             <div class="p-6 border-b">
                 <h2 class="text-xl font-bold text-gray-800 mb-4">Informations générales</h2>
                 <div class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Titre du cours</label>
-                        <input type="text" name="title" class="w-full px-4 py-2 border rounded-lg" placeholder="Titre" value="<?php echo $update_cours['title'] ?>">
+                        <input type="text" name="title" class="w-full px-4 py-2 border rounded-lg" placeholder="Titre">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
@@ -107,7 +111,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Description courte</label>
-                        <input type="text" name="description" class="w-full px-4 py-2 border rounded-lg" placeholder="Description courte" value="<?php echo $update_cours['description'] ?>">
+                        <input type="text" name="description" class="w-full px-4 py-2 border rounded-lg" placeholder="Description courte">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
@@ -144,11 +148,11 @@
                 <h2 class="text-xl font-bold text-gray-800 mb-4">Contenu</h2>
                 <div id="video-input" style="display: block;">
                     <label class="block text-sm font-medium text-gray-700 mb-1">URL de la vidéo</label>
-                    <input type="text" name="video-url" class="w-full px-4 py-2 border rounded-lg" placeholder="https://exemple.com/video.mp4" value="<?php echo $update_cours['content'] ?>">
+                    <input type="url" name="video-url" class="w-full px-4 py-2 border rounded-lg" placeholder="https://exemple.com/video.mp4">
                 </div>
-                <div id="document-textargit ea" style="display: none;">
+                <div id="document-textarea" style="display: none;">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Description complète du document</label>
-                    <textarea name="document" rows="4" class="w-full px-4 py-2 border rounded-lg" placeholder="Description complète">value="<?php echo $update_cours['content'] ?></textarea>
+                    <textarea name="document" rows="4" class="w-full px-4 py-2 border rounded-lg" placeholder="Description complète"></textarea>
                 </div>
             </div>
 
@@ -169,13 +173,13 @@
             <!-- Image URL -->
             <div class="p-6 border-b">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
-                <input type="url" name="image-url" class="w-full px-4 py-2 border rounded-lg" placeholder="https://exemple.com/image.jpg" value="<?php echo $update_cours['photo'] ?>">
+                <input type="url" name="image-url" class="w-full px-4 py-2 border rounded-lg" placeholder="https://exemple.com/image.jpg">
             </div>
-            <input type="hidden" name="id" value="<?php echo $id; ?>">
+
             <!-- Submit Button -->
             <div class="p-6 bg-gray-50 flex justify-end space-x-3">
                 <button type="reset" class="px-4 py-2 border rounded-lg text-gray-700 hover:bg-gray-100">Annuler</button>
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">update le cours</button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Créer le cours</button>
             </div>
         </form>
     </div>
@@ -186,6 +190,5 @@
         placeholder: 'Select tags...',
     });
    </script>
-   <script src="../public/js/script.js"></script>
 </body>
 </html>

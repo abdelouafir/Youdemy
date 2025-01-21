@@ -50,6 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['category_id'])) {
 
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
+<?php include "../../layout/header.php" ?>
+<div class="flex flex-col md:flex-row">
+    <?php include "../../layout/nav.php" ?>
     <div class="container mx-auto px-4 py-6">
         <h1 class="text-3xl font-bold text-center mb-8">Manage Categories</h1>
         <!-- Add Category Form -->
@@ -83,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['category_id'])) {
                             <td class="border border-gray-300 px-4 py-2"><?= $category['name'] ?></td>
                             <td class="border border-gray-300 px-4 py-2 text-center flex justify-center gap-2">
                                 <!-- Edit Button -->
-                            <form action="../../../Models/update_category.php" method="POST" class="inline-block">
+                            <form action="../../../Controllers/update_category.php" method="POST" class="inline-block">
                                 <input type="hidden" name="category_id" value="<?= $category['id'] ?>">
                                 <input type="text" name="category_name" 
                                     value="<?= $category['name'] ?>" 
@@ -111,6 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['category_id'])) {
             </table>
         </div>
     </div>
-
+</div>
 </body>
 </html>

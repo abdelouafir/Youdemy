@@ -23,7 +23,6 @@ if (isset($_SESSION['user'])) {
 }
 
 
-
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -42,7 +41,7 @@ if (isset($_SESSION['user'])) {
                 <button id="toggleSidebar" class="text-gray-500 hover:text-gray-700 transition-colors">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">EduPortal</span>
+                <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">Youdemy</span>
             </div>
             
             <div class="flex items-center gap-8">
@@ -133,7 +132,7 @@ if (isset($_SESSION['user'])) {
                         </div>
                         <h3 class="text-lg font-semibold text-gray-700">En attente</h3>
                     </div>
-                    <p class="text-3xl font-bold text-yellow-600">25</p>
+                    <p class="text-3xl font-bold text-yellow-600"><?php echo $emrollement->toutal_cours_attonte($conction,$data['id'])?></p>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
@@ -143,7 +142,7 @@ if (isset($_SESSION['user'])) {
                         </div>
                         <h3 class="text-lg font-semibold text-gray-700">Cours bloqués</h3>
                     </div>
-                    <p class="text-3xl font-bold text-red-600">25</p>
+                    <p class="text-3xl font-bold text-red-600"><?php echo $emrollement->toutal_cours_block($conction,$data['id'])?></p>
                 </div>
                 
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
@@ -153,19 +152,8 @@ if (isset($_SESSION['user'])) {
                         </div>
                         <h3 class="text-lg font-semibold text-gray-700">Total élèves</h3>
                     </div>
-                    <p class="text-3xl font-bold text-purple-600">25</p>
+                    <p class="text-3xl font-bold text-purple-600"><?php echo $emrollement->total_eleve($conction,$data['id']) ?></p>
                 </div>
-                
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="p-3 bg-indigo-50 rounded-xl">
-                            <i class="fas fa-tasks text-indigo-600 text-xl"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-700">À corriger</h3>
-                    </div>
-                    <p class="text-3xl font-bold text-indigo-600">25</p>
-                </div>
-            </div>
         </div>
     </main>
 

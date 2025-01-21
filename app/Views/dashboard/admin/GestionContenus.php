@@ -57,13 +57,6 @@ if($block_id){
          <?php include "../../layout/nav.php" ?>
         <section style="width:200rem;">
         <div class="container mx-auto px-4 py-12">
-        <!-- Header Section -->
-        <div class="mb-8 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-gray-900">Gestion des Contenus</h1>
-            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-                + Créer un nouveau cours
-            </button>
-        </div>
 
         <!-- Filters and Search -->
         <div class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">

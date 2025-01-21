@@ -117,6 +117,7 @@ class Enrollment extends user {
                courses.prix,
                courses.status,
                courses.video_link,
+               courses.teacher_id,
                users.username,
                users.email,
                categories.name AS category_name
@@ -206,17 +207,92 @@ public function toutal_cours_active_ ($pdo){
     return $result['toutal_student'];
 }
 
-public function toutal_cours_attonte ($pdo,$id){
-    $sql = "SELECT count(*) AS 'toutal_student' FROM courses
-    WHERE teacher_id = $id and status == 'attente'
+public function toutal_cours_attonte($pdo, $id) {
+    $sql = "
+    SELECT COUNT(*) AS toutal_student 
+    FROM courses 
+    WHERE teacher_id = :id AND status = 'attente'
     ";
+
     $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['toutal_student'];
+    
+    return (int)$result['toutal_student']; 
 }
 
+public function toutal_cours_block($pdo, $id) {
+    $sql = "
+    SELECT COUNT(*) AS toutal_student 
+    FROM courses 
+    WHERE teacher_id = :id AND status = 'block'
+    ";
 
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    return (int)$result['toutal_student']; 
+}
+
+public function totalélèvesr($pdo,$id) {
+    $sql = "
+    SELECT 
+        teacher_id, 
+        COUNT(enrollment.student_id) AS total_students 
+    FROM 
+        courses 
+    LEFT JOIN 
+        enrollment ON courses.id = enrollment.course_id 
+    WHERE 
+       courses.id = :id
+    ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $id); 
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    return (int)$result['total_students']; 
+}
+
+public function getTotalStudentsPerCourse($pdo, $id) {
+    $sql = "
+    SELECT 
+        COUNT(enrollment.student_id) AS total_etud
+    FROM 
+        courses
+    LEFT JOIN 
+        enrollment ON courses.id = enrollment.course_id
+    WHERE 
+        courses.id = :id
+    ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $id); 
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    return (int)$result['total_etud']; 
+}
+public function total_eleve($pdo, $id) {
+    $sql = "
+    SELECT 
+        COUNT(DISTINCT student_id) AS total_etud
+    FROM 
+        enrollment
+    WHERE 
+        Enseignant_id = :id
+    ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $id); 
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return (int)$result['total_etud'];
+   }
 }
 
 ?>

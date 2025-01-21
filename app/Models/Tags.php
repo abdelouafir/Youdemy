@@ -75,6 +75,13 @@ public function totale_tags($pdo){
  }
  return true;
 }
+public static function get_un_tag($pdo, $id) {
+  $stmt = $pdo->prepare("SELECT * FROM tags WHERE id = :id");
+  $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
+  $stmt->execute(); 
+  return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 public function get_tag($pdo, $id) {
 
   $sql = "SELECT name FROM tags WHERE id = :id";
@@ -92,6 +99,7 @@ public function get_tag($pdo, $id) {
   }
   return null;
 }
+
 public function delet_all_tags($pdo, $id) {
   $sql = "DELETE FROM course_tags WHERE course_id = :id";
   $stmt = $pdo->prepare($sql);

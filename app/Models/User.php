@@ -26,12 +26,13 @@ class User {
         }
     }
 
-    public function Enrollment($pdo, $id_cours, $id_etudent) {
-        $sql = "INSERT INTO enrollment (student_id, course_id) VALUES (:id_etudent, :id_cours)";
+    public function Enrollment($pdo, $id_cours, $id_etudent,$Enseignant_id) {
+        $sql = "INSERT INTO enrollment (student_id, course_id,Enseignant_id) VALUES (:id_etudent, :id_cours,:Enseignant_id)";
         $stmt = $pdo->prepare($sql);
     
         $stmt->bindParam(':id_etudent', $id_etudent);
         $stmt->bindParam(':id_cours', $id_cours);
+        $stmt->bindParam(':Enseignant_id',$Enseignant_id);
         $stmt->execute();
     }
 
