@@ -21,10 +21,8 @@
         
         $data = $_SESSION['user'] ;
         if($data){
-            echo "hello user";
-        }
-
-        var_dump($data['id']);
+            echo "";
+        }   
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $type = $_POST['type']; 
@@ -152,7 +150,7 @@
                 </div>
                 <div id="document-textarea" style="display: none;">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Description complète du document</label>
-                    <textarea name="document" rows="4" class="w-full px-4 py-2 border rounded-lg" placeholder="Description complète"></textarea>
+                    <textarea name="document" rows="100" class="w-full px-4 py-2 border rounded-lg" placeholder="Description complète"></textarea>
                 </div>
             </div>
 

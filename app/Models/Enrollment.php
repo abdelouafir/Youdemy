@@ -154,7 +154,7 @@ class Enrollment extends user {
         return $valur;
     }
     public function update_status_ban($pdo, $id) {
-        $status = 'attente';
+        $status = 'block';
         $sql = "UPDATE courses 
                 SET status = :status
                 WHERE id = :id";

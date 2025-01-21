@@ -15,10 +15,17 @@ $id_cours = '';
 $student_id = $data['id'];
 $user = new User();
 
+
+$message1 = "Échec, tu es déjà inscrit.";
+$message2 = "L'etudiant est inscrit avec succés";
+$message = '';
 if (isset($_GET['cours_id']) && isset($_GET['teacher_id'])) {
     $cours_id = $_GET['cours_id'];
     $teacher_id = $_GET['teacher_id'];
-    $user->Enrollment($conction,$cours_id,$student_id,$teacher_id);
+    
+
+    $message = $user->Enrollment($conction,$cours_id,$student_id,$teacher_id);
+    
 }
 
 $searchTerm = '';
@@ -112,6 +119,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
 
     <!-- Recommended Courses -->
     <div class="container mx-auto px-6 py-8">
+        <?php
+  
+        if ($message === 1) {  
+            echo "<div class='flex justify-center bg-green-100 text white'>{$message2}</div>";
+        }else{
+            echo "<div class='flex justify-center bg-red-100 text white'>{$message1}</div>";
+        }
+        ?>
         <h2 class="text-2xl font-bold text-gray-800 mb-6">Recommandé pour vous</h2>
         <div class="grid md:grid-cols-3 gap-6">
             <!-- Course Card 1 -->
