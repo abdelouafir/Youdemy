@@ -119,14 +119,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
 
     <!-- Recommended Courses -->
     <div class="container mx-auto px-6 py-8">
-        <?php
-  
-        if ($message === 1) {  
-            echo "<div class='flex justify-center bg-green-100 text white'>{$message2}</div>";
-        }else{
-            echo "<div class='flex justify-center bg-red-100 text white'>{$message1}</div>";
-        }
-        ?>
+    <?php
+    if ($message === 1) {
+        echo "<div id='message' class='flex justify-center bg-green-100 text-white p-4 rounded'>{$message2}</div>";
+    } else {
+        echo "<div id='message' class='flex justify-center bg-red-100 text-white p-4 rounded'>{$message1}</div>";
+    }
+    ?>
+</div>
+    <script>
+        setTimeout(function () {
+            const messageDiv = document.getElementById('message');
+            if (messageDiv) {
+                messageDiv.style.display = 'none';
+            }
+        }, 2000);
+    </script>
+
         <h2 class="text-2xl font-bold text-gray-800 mb-6">Recommandé pour vous</h2>
         <div class="grid md:grid-cols-3 gap-6">
             <!-- Course Card 1 -->
